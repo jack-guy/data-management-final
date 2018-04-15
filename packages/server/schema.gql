@@ -1,0 +1,11 @@
+type Manager {
+  name: String!
+}
+
+type Query {
+  manager: Manager
+}
+
+schema {
+  query: Query
+}

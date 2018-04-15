@@ -1,0 +1,34 @@
+{
+  "name": "data-management-final",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:jack-guy/data-management-final.git",
+  "author": "Jack Guy <jack@breaksuit.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@tethers/core": "link:../tethers/packages/core",
+    "@tethers/errors": "link:../tethers/packages/errors",
+    "@tethers/express": "link:../tethers/packages/express",
+    "@tethers/fetch": "link:../tethers/packages/fetch",
+    "@tethers/mongoose": "link:../tethers/packages/mongoose",
+    "@tethers/uws": "link:../tethers/packages/uws",
+    "@tethers/websocket": "link:../tethers/packages/websocket",
+    "stardog": "^1.2.1"
+  },
+  "resolutions": {
+    "@tethers/core": "link:../tethers/packages/core",
+    "@tethers/errors": "link:../tethers/packages/errors",
+    "@tethers/express": "link:../tethers/packages/express",
+    "@tethers/fetch": "link:../tethers/packages/fetch",
+    "@tethers/mongoose": "link:../tethers/packages/mongoose",
+    "@tethers/uws": "link:../tethers/packages/uws",
+    "@tethers/websocket": "link:../tethers/packages/websocket"
+  },
+  "devDependencies": {
+    "lerna": "^2.5.1",
+    "ts-node": "^5.0.1"
+  }
+}

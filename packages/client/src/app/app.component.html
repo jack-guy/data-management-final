@@ -1,0 +1,59 @@
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav #sidenav class="sidenav" mode="side">
+    <mat-nav-list>
+      <a mat-list-item href="#">Company</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item href="#">Department</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Company DB / Department</span>
+    </mat-toolbar>
+    <section class="page-content">
+      <div class="page-header">
+        <mat-form-field class="form-field">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+        <button mat-raised-button color="primary">Create</button>
+      </div>
+
+      <mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="position">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="weight">
+          <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="symbol">
+          <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator
+        #paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        [showFirstLastButtons]="true">
+      </mat-paginator>
+
+    </section>
+    <!-- <ng-content></ng-content> -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
