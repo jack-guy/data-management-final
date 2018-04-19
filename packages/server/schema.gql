@@ -1,11 +1,8 @@
 type Manager {
-  name: String!
+  carnot_name: name: String!
+  
 }
 
 type Query {
   manager: Manager
-}
-
-schema {
-  query: Query
 }

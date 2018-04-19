@@ -15,8 +15,7 @@
     "@tethers/fetch": "link:../tethers/packages/fetch",
     "@tethers/mongoose": "link:../tethers/packages/mongoose",
     "@tethers/uws": "link:../tethers/packages/uws",
-    "@tethers/websocket": "link:../tethers/packages/websocket",
-    "stardog": "^1.2.1"
+    "@tethers/websocket": "link:../tethers/packages/websocket"
   },
   "resolutions": {
     "@tethers/core": "link:../tethers/packages/core",
