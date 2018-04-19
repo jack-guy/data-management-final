@@ -1,5 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, PageEvent } from '@angular/material';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,20 @@ export class AppComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  constructor (apollo: Apollo) {
+    apollo.query({
+      query: gql`
+        query withPrefixes @prefix(carnot: "http://Carnot.org/") {
+          carnot_Employee {
+            carnot_id
+            schema_name @optional
+          }
+        }
+      `,
+      variables: { '@reasoning': true }
+    }).subscribe(console.log);
+  }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;

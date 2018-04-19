@@ -61,9 +61,13 @@ export class TypeOverviewResolver implements Resolve<any> {
 })
 export class AppModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
+    // stardog-admin server start --disable-security
+    // Basic YWRtaW46YWRtaW4=
     apollo.create({
       link: httpLink.create({ uri: 'http://localhost:5820/companyDB/graphql' }),
-      cache: new InMemoryCache()
+      cache: new InMemoryCache({
+        addTypename: false
+      })
     });
   }
 }
