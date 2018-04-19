@@ -5,13 +5,26 @@ import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { CreateDialogComponent } from './create-dialog/create-dialog.component';
-import { TypeOverviewComponent } from './type-overview/type-overview.component';
 import { HomeComponent } from './home/home.component';
+import { TypesService } from './types.service';
+import { TypeOverviewComponent } from './type-overview/type-overview.component';
 
+import { flatMap } from 'rxjs/';
+
+export class TypeOverviewResolver implements Resolve<any> {
+  constructor (private types: TypesService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.types.find().pipe(
+      flatMap
+    )
+  }
+}
 
 @NgModule({
   declarations: [
@@ -27,8 +40,23 @@ import { HomeComponent } from './home/home.component';
     HttpLinkModule,
     MaterialModule,
     BrowserAnimationsModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        redirectTo: '/home'
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'types/:id',
+        component: TypeOverviewComponent,
+        resolve: 
+      }
+    ])
   ],
-  providers: [],
+  providers: [TypesService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
