@@ -9,12 +9,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { CreateDialogComponent } from './create-dialog/create-dialog.component';
+import { TypeOverviewComponent } from './type-overview/type-overview.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateDialogComponent
+    CreateDialogComponent,
+    TypeOverviewComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
