@@ -1,9 +1,11 @@
 <mat-sidenav-container class="layout-container">
   <mat-sidenav #sidenav class="sidenav" mode="side">
     <mat-nav-list>
-      <a mat-list-item href="#">Company</a>
-      <mat-divider></mat-divider>
-      <a mat-list-item href="#">Department</a>
+      <ng-container *ngFor="let menuItem of (menuItems | async)">
+        <a mat-list-item [routerLink]="['/types', menuItem.rdfType]">{{menuItem.name}}</a>
+        <mat-divider></mat-divider>
+        <!-- <a mat-list-item href="#">Department</a> -->
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -11,10 +13,11 @@
       <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>Company DB / Department</span>
+      <span>Company DB / {{routeName}}</span>
     </mat-toolbar>
     <section class="page-content">
-      <div class="page-header">
+      <router-outlet></router-outlet>
+      <!-- <div class="page-header">
         <mat-form-field class="form-field">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
@@ -51,7 +54,7 @@
         [pageSize]="10"
         [pageSizeOptions]="[5, 10, 20]"
         [showFirstLastButtons]="true">
-      </mat-paginator>
+      </mat-paginator> -->
 
     </section>
     <!-- <ng-content></ng-content> -->

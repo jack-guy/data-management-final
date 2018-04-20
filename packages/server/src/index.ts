@@ -55,7 +55,7 @@ export interface TextInput extends Input {
   label: string;
   minLength?: number;
   maxLength?: number;
-} 
+}
 
 export interface BoolInput extends Input {}
 export interface DateInput extends Input {
@@ -310,7 +310,7 @@ const FormerManagerType: ExposedType = {
     Properties.carnot_married,
     Properties.carnot_hiredate,
     Properties.carnot_salary,
-    Properties.carnot_title,    
+    Properties.carnot_title,
   ],
   mutable: true,
 };
@@ -414,6 +414,14 @@ const EXPOSED_TYPES: ExposedType[] = [
 
 import * as express from 'express';
 const app = express();
+
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 
 app.get('/types', (req, res) => {
   res.json(EXPOSED_TYPES.map((exposedType) => {

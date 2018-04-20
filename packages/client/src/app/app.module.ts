@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
@@ -14,14 +14,27 @@ import { HomeComponent } from './home/home.component';
 import { TypesService } from './types.service';
 import { TypeOverviewComponent } from './type-overview/type-overview.component';
 
-import { flatMap } from 'rxjs/';
+import { flatMap, map } from 'rxjs/operators';
 
+@Injectable()
 export class TypeOverviewResolver implements Resolve<any> {
   constructor (private types: TypesService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.types.find().pipe(
-      flatMap
+      flatMap(() => this.types.get(route.paramMap.get('id')))
+    )
+  }
+}
+
+@Injectable()
+export class TypeOverviewNameResolver implements Resolve<any> {
+  constructor (private types: TypesService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.types.find().pipe(
+      flatMap(() => this.types.get(route.paramMap.get('id'))),
+      map((type: any) => type.name)
     )
   }
 }
@@ -43,20 +56,31 @@ export class TypeOverviewResolver implements Resolve<any> {
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: '/home'
+        redirectTo: '/home',
+        pathMatch: 'full'
       },
       {
         path: 'home',
         component: HomeComponent,
+        data: {
+          'pageName': 'Home'
+        }
       },
       {
         path: 'types/:id',
         component: TypeOverviewComponent,
-        resolve: 
+        resolve: {
+          pageName: TypeOverviewNameResolver,
+          type: TypeOverviewResolver
+        },
       }
     ])
   ],
-  providers: [TypesService],
+  providers: [
+    TypesService,
+    TypeOverviewNameResolver,
+    TypeOverviewResolver
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

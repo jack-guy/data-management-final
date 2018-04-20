@@ -1,0 +1,17 @@
+schema {
+  query: Query
+}
+
+interface Person {
+  name: String!
+  dob: Date!
+  education: String!
+  ssnum: String!
+  gender: String!
+  citizen: Boolean!
+  married: Boolean!
+}
+
+type Employee implements  {
+
+}

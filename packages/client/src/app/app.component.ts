@@ -2,20 +2,41 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, PageEvent } from '@angular/material';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { TypesService } from './types.service';
+import { of } from 'rxjs/observable/of';
+import { map, flatMap, filter, tap, startWith } from 'rxjs/operators';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit {
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
   displayedColumns = ['position', 'name', 'weight', 'symbol'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor (apollo: Apollo) {
+  menuItems = this.types.find().pipe(
+    flatMap((x) => of(x))
+  )
+
+  routeName = this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    flatMap((route) => this.activatedRoute.data),
+    map((data) => data['pageName']),
+    tap(console.log),
+    startWith((route) => this.activatedRoute.snapshot.data['pageName']),
+  );
+
+  constructor (
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private types: TypesService,
+    private apollo: Apollo
+  ) {
     apollo.query({
       query: gql`
         query withPrefixes @prefix(carnot: "http://Carnot.org/") {
