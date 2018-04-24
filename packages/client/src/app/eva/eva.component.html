@@ -1,0 +1,21 @@
+<a
+  href="javascript:void(0)"
+  [satPopoverAnchorFor]="evaPopover"
+  (click)="open($event)"
+>
+  {{instance[column.rdfField][column.listField]}}
+</a>
+<sat-popover
+  #evaPopover
+  verticalAlign="above"
+>
+  <ng-container *ngIf="evaPopover.isOpen">
+    <app-eva-preview
+      class="eva-popover"
+      (click)="popoverClick($event)"
+      [rdfType]="column.rdfType"
+      [listField]="column.listField"
+      [listFieldVal]="instance[column.rdfField][column.listField]"
+    ></app-eva-preview>
+  </ng-container>
+</sat-popover>

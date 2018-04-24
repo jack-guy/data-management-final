@@ -1,0 +1,15 @@
+<mat-card class="eva-card">
+  <div class="eva-card-title">
+    <a mat-button [routerLink]="['/types', rdfType]" class="button-no-focus">
+      {{(type$ | async)?.name}}
+    </a>
+  </div>
+  <table class="eva-table">
+    <tr *ngFor="let col of (type$ | async)?.columns">
+      <ng-container *ngIf="(object$ | async); let obj">
+        <td>{{col.label}}</td>
+        <td>{{obj[col.rdfField]}}</td>
+      </ng-container>
+    </tr>
+  </table>
+</mat-card>

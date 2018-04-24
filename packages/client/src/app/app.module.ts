@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Resolve, ActivatedRouteSnapshot } from '@angular/router';
+
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
@@ -14,16 +16,22 @@ import { HomeComponent } from './home/home.component';
 import { TypesService } from './types.service';
 import { TypeOverviewComponent } from './type-overview/type-overview.component';
 
-import { flatMap, map } from 'rxjs/operators';
+import { flatMap, map, tap } from 'rxjs/operators';
+
+import {
+  SatPopoverModule
+} from '@ncstate/sat-popover';
+import { EvaPreviewComponent } from './eva-preview/eva-preview.component';
+import { MultiEvaComponent } from './multi-eva/multi-eva.component';
+import { EvaComponent } from './eva/eva.component'; 
+
 
 @Injectable()
 export class TypeOverviewResolver implements Resolve<any> {
   constructor (private types: TypesService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.types.find().pipe(
-      flatMap(() => this.types.get(route.paramMap.get('id')))
-    )
+    return this.types.get(route.paramMap.get('id'));
   }
 }
 
@@ -32,10 +40,9 @@ export class TypeOverviewNameResolver implements Resolve<any> {
   constructor (private types: TypesService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.types.find().pipe(
-      flatMap(() => this.types.get(route.paramMap.get('id'))),
-      map((type: any) => type.name)
-    )
+    return this.types.get(route.paramMap.get('id')).pipe(
+      map((type: any) => type.name),
+    );
   }
 }
 
@@ -44,7 +51,10 @@ export class TypeOverviewNameResolver implements Resolve<any> {
     AppComponent,
     CreateDialogComponent,
     TypeOverviewComponent,
-    HomeComponent
+    HomeComponent,
+    EvaPreviewComponent,
+    MultiEvaComponent,
+    EvaComponent
   ],
   imports: [
     BrowserModule,
@@ -52,12 +62,22 @@ export class TypeOverviewNameResolver implements Resolve<any> {
     ApolloModule,
     HttpLinkModule,
     MaterialModule,
+    SatPopoverModule,
     BrowserAnimationsModule,
+    FormsModule,
     RouterModule.forRoot([
       {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
+      },
+      {
+        path: 'types/:id',
+        component: TypeOverviewComponent,
+        resolve: {
+          pageName: TypeOverviewNameResolver,
+          type: TypeOverviewResolver
+        },
       },
       {
         path: 'home',
@@ -67,19 +87,18 @@ export class TypeOverviewNameResolver implements Resolve<any> {
         }
       },
       {
-        path: 'types/:id',
-        component: TypeOverviewComponent,
-        resolve: {
-          pageName: TypeOverviewNameResolver,
-          type: TypeOverviewResolver
-        },
+        path: '**',
+        redirectTo: '/home'
       }
-    ])
+    ]),
   ],
   providers: [
     TypesService,
     TypeOverviewNameResolver,
     TypeOverviewResolver
+  ],
+  entryComponents: [
+    CreateDialogComponent
   ],
   bootstrap: [AppComponent]
 })

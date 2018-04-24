@@ -1,0 +1,10 @@
+// Import material theming functions
+@import '~@angular/material/theming';
+
+// // $warn: mat-color($app-warn);
+$primary-palette: mat-palette($mat-indigo);
+$accent-palette:  mat-palette($mat-pink, A200, A100, A400);
+$theme: mat-light-theme($primary-palette, $accent-palette);
+
+// $primary: mat-color($primary-palette);
+// $accent: map-color($accent-palette);

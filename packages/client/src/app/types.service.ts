@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, filter, flatMap } from 'rxjs/operators';
+import { map, filter, flatMap, tap, take } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 
@@ -14,8 +14,9 @@ export class TypesService {
 
   get (id: string) {
     return this.http.get('http://localhost:4201/types').pipe(
-      flatMap((x) => of(x)),
-      filter((data: any) => data.rdfType === id)
+      flatMap((x) => x as any),
+      filter((data: any) => data.rdfType === id),
+      take(1),
     );
   }
 }

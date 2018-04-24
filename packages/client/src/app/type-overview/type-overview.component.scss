@@ -1,0 +1,25 @@
+.page-header {
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem;
+    align-items: center;
+
+    > .form-field {
+        flex: 1;
+        margin-right: 1rem;
+    }
+}
+
+.eva-popover {
+    margin-bottom: 0.5rem;
+}
+
+.filter-popover-card {
+    padding: 0;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.filter-button {
+    margin-right: 0.5rem;
+}

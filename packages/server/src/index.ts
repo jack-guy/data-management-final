@@ -47,34 +47,57 @@ const test = query.graphql.execute(
 })
 
 
-export interface Input {
+export abstract class Input {
+  abstract input: string;
   label: string;
+  constructor (props) {
+    Object.assign(this, props);
+  }
 }
 
-export interface TextInput extends Input {
+export class TextInput extends Input {
+  input = 'text';
   label: string;
   minLength?: number;
   maxLength?: number;
 }
 
-export interface BoolInput extends Input {}
-export interface DateInput extends Input {
+export class TextareaInput extends TextInput {
+  input = 'textarea';
+}
+
+export class BoolInput extends Input {
+  input = 'bool';
+}
+
+export class DateInput extends Input {
+  input = 'date';
   minDate?: Date;
   maxDate?: Date;
 }
 
-export interface SelectInput extends Input {
+export class SelectInput extends Input {
+  input = 'select';
   values: string[];
   default?: string;
 }
 
-export interface NumberInput extends Input {
+export class NumberInput extends Input {
+  input = 'number';
   min?: number;
   max?: number;
 }
 
-export interface EvaInput extends Input {
+export class EvaInput extends Input {
+  input = 'eva';
   rdfType: string;
+  listField: string;
+}
+
+export class MevaInput extends Input {
+  input = 'meva';
+  rdfType: string;
+  listField: string;
 }
 
 enum Properties {
@@ -98,83 +121,107 @@ enum Properties {
   carnot_lastday = 'carnot_lastday',
   carnot_title = 'carnot_title',
   carnot_status = 'carnot_status',
+  carnot_employeeManager = 'carnot_employeeManager',
+  carnot_employeeCompany = 'carnot_employeeCompany',
+  carnot_employeeDepartment = 'carnot_employeeDepartment',
+  carnot_companyEmployees = 'carnot_companyEmployees',
 };
 
-const schema_name_input: TextInput = {
+const schema_name_input = new TextInput({
   label: 'Name',
   maxLength: 50
-};
-const schema_cv_input: TextInput = {
+});
+const schema_cv_input = new TextareaInput({
   label: 'Resume',
   maxLength: 4096
-};
-const schema_gender_input: SelectInput = {
+});
+const schema_gender_input = new SelectInput({
   label: 'Gender',
   values: [ 'Male', 'Female' ]
-};
-const schema_description_input: TextInput = {
+});
+const schema_description_input = new TextareaInput({
   label: 'Description',
   maxLength: 1024
-};
-const schema_startDate_input: DateInput = {
+});
+const schema_startDate_input = new DateInput({
   label: 'Start Date',
-};
-const schema_endDate_input: DateInput = {
+});
+const schema_endDate_input = new DateInput({
   label: 'End Date'
-};
-const carnot_type_input: TextInput = {
+});
+const carnot_type_input = new TextInput({
   label: 'Type',
   maxLength: 50
-};
-const carnot_missionStatement_input: TextInput = {
+});
+const carnot_missionStatement_input = new TextareaInput({
   label: 'Mission Statement',
   maxLength: 100
-};
-const carnot_dob_input: DateInput = {
+});
+const carnot_dob_input = new DateInput({
   label: 'Date of Birth',
   maxDate: new Date()
-};
-const carnot_education_input: SelectInput = {
+});
+const carnot_education_input = new SelectInput({
   label: 'Education',
   values: ['Some High School', 'Diploma', 'Bachelors', 'Masters', 'Doctorate']
-};
-const carnot_ssnum_input: TextInput = {
+});
+const carnot_ssnum_input = new TextInput({
   label: 'Social Security Number',
   minLength: 9,
   maxLength: 9
-};
-const carnot_citizen_input: BoolInput = {
+});
+const carnot_citizen_input = new BoolInput({
   label: 'Citizen',
-};
-const carnot_married_input: BoolInput = {
+});
+const carnot_married_input = new BoolInput({
   label: 'Married',
-};
-const carnot_hiredate_input: DateInput = {
+});
+const carnot_hiredate_input = new DateInput({
   label: 'Hire Date',
-};
-const carnot_salary_input: NumberInput = {
+});
+const carnot_salary_input = new NumberInput({
   label: 'Salary',
   min: 0
-};
-const carnot_terminationreason_input: TextInput = {
+});
+const carnot_terminationreason_input = new TextareaInput({
   label: 'Termination Reason',
   maxLength: 100
-};
-const carnot_leavestatus_input: TextInput = {
+});
+const carnot_leavestatus_input = new TextInput({
   label: 'Leave Status',
   maxLength: 50
-};
-const carnot_lastday_input: DateInput = {
+});
+const carnot_lastday_input = new DateInput({
   label: 'Last Day',
-};
-const carnot_title_input: TextInput = {
+});
+const carnot_title_input = new TextInput({
   label: 'Job Title',
   maxLength: 50
-};
-const carnot_status_input: TextInput = {
+});
+const carnot_status_input = new TextInput({
   label: 'Assignment Status',
   maxLength: 50
-};
+});
+const carnot_manager_input = new EvaInput({
+  label: 'Manager',
+  rdfType: 'carnot_Manager',
+  listField: 'schema_name'
+});
+const carnot_company_input = new EvaInput({
+  label: 'Company',
+  rdfType: 'carnot_Company',
+  listField: 'schema_name'
+});
+const carnot_department_input = new EvaInput({
+  label: 'Department',
+  rdfType: 'carnot_Department',
+  listField: 'schema_name'
+});
+const carnot_employees_input = new MevaInput({
+  label: 'Employees',
+  rdfType: 'carnot_Employee',
+  listField: 'schema_name'
+});
 
 type PropertyToInput = { [P in Properties]: Input };
 const PROPERTY_TO_INPUT: PropertyToInput = {
@@ -198,19 +245,34 @@ const PROPERTY_TO_INPUT: PropertyToInput = {
   [Properties.carnot_lastday]: carnot_lastday_input,
   [Properties.carnot_title]: carnot_title_input,
   [Properties.carnot_status]: carnot_status_input,
+  [Properties.carnot_employeeManager]: carnot_manager_input,
+  [Properties.carnot_employeeCompany]: carnot_company_input,
+  [Properties.carnot_employeeDepartment]: carnot_department_input,
+  [Properties.carnot_companyEmployees]: carnot_employees_input,
 };
 
 interface ExposedType {
   name: string;
   rdfType: string;
-  fields: Properties[];
+  inputs: Properties[];
+  columns: Properties[];
+  defaultColumns: Properties[];
   mutable: boolean;
 }
 
 const CompanyType: ExposedType = {
   name: 'Company',
   rdfType: 'carnot_Company',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.carnot_type,
+    Properties.carnot_companyEmployees
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_type    
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.carnot_type
   ],
@@ -220,7 +282,15 @@ const CompanyType: ExposedType = {
 const DepartmentType: ExposedType = {
   name: 'Department',
   rdfType: 'carnot_Department',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.carnot_missionStatement
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_missionStatement
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.carnot_missionStatement
   ],
@@ -229,10 +299,18 @@ const DepartmentType: ExposedType = {
 
 const PersonType: ExposedType = {
   name: 'Person',
-  rdfType: 'carnot_Person',
-  fields: [
+  rdfType: 'schema_Person',
+  columns: [
     Properties.schema_name,
     Properties.carnot_dob
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.carnot_dob    
   ],
   mutable: false
 };
@@ -240,7 +318,7 @@ const PersonType: ExposedType = {
 const EmployeeType: ExposedType = {
   name: 'Employee',
   rdfType: 'carnot_Employee',
-  fields: [
+  columns: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -250,9 +328,29 @@ const EmployeeType: ExposedType = {
     Properties.carnot_married,
     Properties.carnot_hiredate,
     Properties.carnot_salary,
-    // department
-    // manager
-    // ?company
+    Properties.carnot_employeeCompany,
+    Properties.carnot_employeeDepartment,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_employeeDepartment,
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_employeeDepartment,
   ],
   mutable: true
 };
@@ -260,7 +358,7 @@ const EmployeeType: ExposedType = {
 const FormerEmployeeType: ExposedType = {
   name: 'Former Employee',
   rdfType: 'carnot_FormerEmployee',
-  fields: [
+  columns: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -272,9 +370,33 @@ const FormerEmployeeType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_terminationreason,
     Properties.carnot_leavestatus,
-    Properties.carnot_lastday
-    // department
-    // manager
+    Properties.carnot_lastday,
+    Properties.carnot_employeeDepartment,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_ssnum,
+    Properties.carnot_hiredate,
+    Properties.carnot_terminationreason,
+    Properties.carnot_leavestatus,
+    Properties.carnot_lastday,
+    Properties.carnot_employeeDepartment,
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_terminationreason,
+    Properties.carnot_leavestatus,
+    Properties.carnot_lastday,
+    Properties.carnot_employeeDepartment,
   ],
   mutable: true
 };
@@ -282,7 +404,7 @@ const FormerEmployeeType: ExposedType = {
 const ManagerType: ExposedType = {
   name: 'Manager',
   rdfType: 'carnot_Manager',
-  fields: [
+  columns: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -293,6 +415,33 @@ const ManagerType: ExposedType = {
     Properties.carnot_hiredate,
     Properties.carnot_salary,
     Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
   ],
   mutable: true
 };
@@ -300,7 +449,7 @@ const ManagerType: ExposedType = {
 const FormerManagerType: ExposedType = {
   name: 'Former Manager',
   rdfType: 'carnot_FormerManager',
-  fields: [
+  columns: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -311,6 +460,33 @@ const FormerManagerType: ExposedType = {
     Properties.carnot_hiredate,
     Properties.carnot_salary,
     Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+    Properties.carnot_hiredate,
+    Properties.carnot_salary,
+    Properties.carnot_title,
+    Properties.carnot_employeeDepartment,
   ],
   mutable: true,
 };
@@ -318,7 +494,25 @@ const FormerManagerType: ExposedType = {
 const OutsideEmployeeType: ExposedType = {
   name: 'Outside Employee',
   rdfType: 'carnot_OutsideEmployee',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -333,7 +527,25 @@ const OutsideEmployeeType: ExposedType = {
 const ConsultantType: ExposedType = {
   name: 'Consultant',
   rdfType: 'carnot_Consultant',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_dob,
+    Properties.carnot_education,
+    Properties.carnot_ssnum,
+    Properties.schema_gender,
+    Properties.carnot_citizen,
+    Properties.carnot_married,
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.carnot_dob,
     Properties.carnot_education,
@@ -348,7 +560,15 @@ const ConsultantType: ExposedType = {
 const AssignmentType: ExposedType = {
   name: 'Assignment',
   rdfType: 'carnot_Assignment',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.carnot_status,
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.carnot_status,
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.carnot_status,
   ],
@@ -358,7 +578,15 @@ const AssignmentType: ExposedType = {
 const DateRangeType: ExposedType = {
   name: 'Date Range',
   rdfType: 'carnot_DateRange',
-  fields: [
+  columns: [
+    Properties.schema_startDate,
+    Properties.schema_endDate,
+  ],
+  defaultColumns: [
+    Properties.schema_startDate,
+    Properties.schema_endDate,
+  ],
+  inputs: [
     Properties.schema_startDate,
     Properties.schema_endDate,
   ],
@@ -368,7 +596,15 @@ const DateRangeType: ExposedType = {
 const ProjectType: ExposedType = {
   name: 'Project',
   rdfType: 'carnot_Project',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.schema_description
   ],
@@ -378,7 +614,15 @@ const ProjectType: ExposedType = {
 const TaskType: ExposedType = {
   name: 'Task',
   rdfType: 'carnot_Task',
-  fields: [
+  columns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  inputs: [
     Properties.schema_name,
     Properties.schema_description
   ],
@@ -388,8 +632,17 @@ const TaskType: ExposedType = {
 const PairingType: ExposedType = {
   name: 'Pairing',
   rdfType: 'carnot_Pairing',
-  fields: [
-
+  columns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  defaultColumns: [
+    Properties.schema_name,
+    Properties.schema_description
+  ],
+  inputs: [
+    Properties.schema_name,
+    Properties.schema_description
   ],
   mutable: true
 };
@@ -427,7 +680,15 @@ app.get('/types', (req, res) => {
   res.json(EXPOSED_TYPES.map((exposedType) => {
     return {
       ...exposedType,
-      fields: exposedType.fields.map((field) => PROPERTY_TO_INPUT[field])
+      columns: exposedType.columns.map((col) => ({
+        ...PROPERTY_TO_INPUT[col],
+        rdfField: col,
+      })),
+      defaultColumns: exposedType.defaultColumns,
+      inputs: exposedType.inputs.map((input) => ({
+        ...PROPERTY_TO_INPUT[input],
+        rdfField: input,
+      })),
     };
   }));
 });

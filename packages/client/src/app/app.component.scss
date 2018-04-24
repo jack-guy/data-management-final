@@ -1,24 +1,36 @@
+@import "~../sass/_variables.scss";
+
 html, body, :host, :host > .layout-container {
   height: 100vh;
+}
+
+$light-text: rgba(map-get(map-get($primary-palette, contrast), 800), 0.9);
+
+.home-nav {
+  margin: 0 auto;
+  display: block;
+  margin-top: 0.5rem;
 }
 
 .sidenav {
   width: 200px;
   height: 100vh;
+  background-color: map-get($primary-palette, 800);
+  color: $light-text;
+}
+
+.menu-item {
+  color: $light-text;
+}
+
+.menu-item-divider {
+  border-top-color: rgba(white,.12);
 }
 
 .menu-button {
   margin-right: 1rem;
 }
 
-.page-header {
-  display: flex;
-  flex-direction: row;
-  padding: 0 1rem;
-  align-items: center;
-
-  > .form-field {
-    flex: 1;
-    margin-right: 2rem;
-  }
+.subHeading {
+  color: rgba(black, 0.55);
 }

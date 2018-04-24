@@ -11,8 +11,15 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatInput,
-  MatInputModule
+  MatInputModule,
+  MatDialogModule,
+  MatCardModule,
+  MatChipsModule
 } from '@angular/material';
+
+import {
+  SatPopoverModule
+} from '@ncstate/sat-popover'; 
 
 const MATERIAL_COMPONENTS = [
   MatButtonModule,
@@ -25,7 +32,10 @@ const MATERIAL_COMPONENTS = [
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
-  MatInputModule
+  MatInputModule,
+  MatDialogModule,
+  MatCardModule,
+  MatChipsModule
 ];
 
 @NgModule({

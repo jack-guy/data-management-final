@@ -1,0 +1,19 @@
+<a
+  href="javascript:void(0)"
+  [satPopoverAnchorFor]="popover"
+  (click)="popoverOpen($event)"
+>4 Employees...</a>
+<sat-popover
+  #popover
+  verticalAlign="above"
+>
+  <mat-card class="popover-card">
+    <!-- <mat-nav-list
+      #filterList
+      [(ngModel)]="displayedColumns"
+      (click)="$event.stopPropagation()"
+    >
+      <a mat-list-item *ngFor="let link of links"> {{ link }} </a>
+    </mat-nav-list> -->
+  </mat-card>
+</sat-popover>
