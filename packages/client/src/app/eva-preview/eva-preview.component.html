@@ -6,9 +6,27 @@
   </div>
   <table class="eva-table">
     <tr *ngFor="let col of (type$ | async)?.columns">
-      <ng-container *ngIf="(object$ | async); let obj">
+      <ng-container *ngIf="(instance$ | async); let instance">
         <td>{{col.label}}</td>
-        <td>{{obj[col.rdfField]}}</td>
+        <td>
+
+          <ng-container [ngSwitch]="col.inputType">
+              <app-eva
+                *ngSwitchCase="'eva'"
+                [instance]="instance"
+                [column]="col">
+              </app-eva>
+              <app-multi-eva
+                *ngSwitchCase="'meva'"
+                [instance]="instance"
+                [column]="col">
+              </app-multi-eva>
+              <span *ngSwitchDefault>
+                {{instance[col.rdfField]}}
+              </span>
+            </ng-container>
+        
+        </td>
       </ng-container>
     </tr>
   </table>

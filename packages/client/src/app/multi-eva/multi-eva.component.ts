@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, HostListener, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
@@ -7,8 +7,15 @@ import { SatPopover } from '@ncstate/sat-popover';
   styleUrls: ['./multi-eva.component.scss']
 })
 export class MultiEvaComponent implements OnInit {
-  @ViewChild('mevaPopover') mevaPopover: SatPopover;
-
+  @ViewChild('popover') popover: SatPopover;
+  @ViewChildren('mevaPopover') mevaPopover: QueryList<SatPopover>;
+  @HostListener('document:click', ['$event']) clickedOutside($event) {
+    if (this.popover && this.popover.isOpen()) {
+      this.popover.close();
+    }
+    this.mevaPopover.forEach((popover) => popover.close());
+  }
+  
   @Input() instance;
   @Input() column;
 
@@ -26,13 +33,24 @@ export class MultiEvaComponent implements OnInit {
 
   open (e: MouseEvent) {
     e.stopPropagation();
-    this.mevaPopover.toggle();
-    if (this.mevaPopover.isOpen) {
+    this.popover.toggle();
+    if (this.popover.isOpen()) {
       this.popoverOpen.emit(null);
     }
   }
+  
+  openEva (e: MouseEvent, popover: SatPopover) {
+    e.stopPropagation();
+    popover.toggle();
+    if (this.popover.isOpen) {
+      this.mevaPopover
+        .filter(item => item !== popover)
+        .forEach((item) => item.close());
+    }
+  }
+
 
   close () {
-    this.mevaPopover.close();
+    this.popover.close();
   }
 }

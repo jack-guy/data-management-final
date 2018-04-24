@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 })
 export class EvaPreviewComponent implements OnInit {
   private type$;
-  private object$;
+  private instance$;
 
   @Input() rdfType;
   @Input() listField;
@@ -24,13 +24,13 @@ export class EvaPreviewComponent implements OnInit {
 
   ngOnInit() {
     this.type$ = this.types.get(this.rdfType).pipe(share());
-    this.object$ = this.type$.pipe(
+    this.instance$ = this.type$.pipe(
       flatMap((type: any) => this.apollo.query({
         query: gql`
           query withPrefixes @prefix(carnot: "http://Carnot.org/") {
             ${type.rdfType} {
               ${type.columns.map((col) => {
-                if (col.input === 'eva') {
+                if (col.inputType === 'eva' || col.inputType === 'meva') {
                   return `${col.rdfField} @optional {
                     ${col.listField} @optional
                   }\n`;

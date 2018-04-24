@@ -48,7 +48,7 @@ const test = query.graphql.execute(
 
 
 export abstract class Input {
-  abstract input: string;
+  abstract inputType: string;
   label: string;
   constructor (props) {
     Object.assign(this, props);
@@ -56,46 +56,46 @@ export abstract class Input {
 }
 
 export class TextInput extends Input {
-  input = 'text';
+  inputType = 'text';
   label: string;
   minLength?: number;
   maxLength?: number;
 }
 
 export class TextareaInput extends TextInput {
-  input = 'textarea';
+  inputType = 'textarea';
 }
 
 export class BoolInput extends Input {
-  input = 'bool';
+  inputType = 'bool';
 }
 
 export class DateInput extends Input {
-  input = 'date';
+  inputType = 'date';
   minDate?: Date;
   maxDate?: Date;
 }
 
 export class SelectInput extends Input {
-  input = 'select';
+  inputType = 'select';
   values: string[];
   default?: string;
 }
 
 export class NumberInput extends Input {
-  input = 'number';
+  inputType = 'number';
   min?: number;
   max?: number;
 }
 
 export class EvaInput extends Input {
-  input = 'eva';
+  inputType = 'eva';
   rdfType: string;
   listField: string;
 }
 
 export class MevaInput extends Input {
-  input = 'meva';
+  inputType = 'meva';
   rdfType: string;
   listField: string;
 }
@@ -270,7 +270,8 @@ const CompanyType: ExposedType = {
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.carnot_type    
+    Properties.carnot_type,
+    Properties.carnot_companyEmployees
   ],
   inputs: [
     Properties.schema_name,

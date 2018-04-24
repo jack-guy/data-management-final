@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { MatSidenav, MatSelectionList, MatSort, MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { CreateDialogComponent } from '../create-dialog/create-dialog.component';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
-import { flatMap, map, startWith, zip, share, combineLatest } from 'rxjs/operators';
+import { flatMap, map, startWith, zip, share, combineLatest, take } from 'rxjs/operators';
 import { merge } from 'rxjs/observable/merge';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SatPopover } from '@ncstate/sat-popover';
@@ -49,7 +49,7 @@ export class TypeOverviewComponent implements OnInit, AfterViewInit {
           query withPrefixes @prefix(carnot: "http://Carnot.org/") {
             ${type.rdfType} {
               ${type.columns.map((col) => {
-                if (col.input === 'eva' || col.input === 'meva') {
+                if (col.inputType === 'eva' || col.inputType === 'meva') {
                   return `${col.rdfField} @optional {
                     ${col.listField} @optional
                   }\n`;
@@ -100,9 +100,12 @@ export class TypeOverviewComponent implements OnInit, AfterViewInit {
   }
 
   create () {
-    let dialogRef = this.dialog.open(CreateDialogComponent, {
-      height: '400px',
-      width: '600px',
+    this.type$.pipe(take(1)).subscribe((type) => {
+      let dialogRef = this.dialog.open(CreateDialogComponent, {
+        height: '400px',
+        width: '600px',
+        data: { type }
+      });
     });
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log('The dialog was closed');

@@ -1,19 +1,31 @@
 <a
   href="javascript:void(0)"
   [satPopoverAnchorFor]="popover"
-  (click)="popoverOpen($event)"
->4 Employees...</a>
-<sat-popover
-  #popover
-  verticalAlign="above"
->
+  (click)="open($event)"
+  *ngIf="instance[column.rdfField]"
+>{{instance[column.rdfField].length}} {{column.label}}</a>
+<sat-popover #popover verticalAlign="above">
   <mat-card class="popover-card">
-    <!-- <mat-nav-list
+    <mat-nav-list
       #filterList
-      [(ngModel)]="displayedColumns"
       (click)="$event.stopPropagation()"
     >
-      <a mat-list-item *ngFor="let link of links"> {{ link }} </a>
-    </mat-nav-list> -->
+      <ng-container *ngFor="let item of instance[column.rdfField]">
+        <sat-popover #mevaPopover verticalAlign="above">
+          <ng-container *ngIf="mevaPopover.isOpen()">
+            <app-eva-preview
+              class="eva-popover"
+              (click)="popoverClick($event)"
+              [rdfType]="column.rdfType"
+              [listField]="column.listField"
+              [listFieldVal]="item[column.listField]"
+            ></app-eva-preview>
+          </ng-container>
+        </sat-popover>
+        <a mat-list-item (click)="openEva($event, mevaPopover)" [satPopoverAnchorFor]="mevaPopover">
+          {{ item[column.listField] }}  
+        </a>
+      </ng-container>
+    </mat-nav-list>
   </mat-card>
 </sat-popover>

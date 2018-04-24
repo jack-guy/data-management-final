@@ -10,7 +10,13 @@
   <mat-form-field class="form-field">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="create()">Create</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="create()"
+  >
+    Create
+  </button>
   
   <sat-popover
     #filterPopover
@@ -38,24 +44,24 @@
   <ng-container *ngFor="let col of (type$ | async)?.columns" [matColumnDef]="col.rdfField">
     <mat-header-cell *matHeaderCellDef mat-sort-header>{{col.label}}</mat-header-cell>
     <mat-cell *matCellDef="let instance">
-      <ng-container [ngSwitch]="col.input">
+      <ng-container [ngSwitch]="col.inputType">
         <app-eva
-          *ngSwitchCase="eva"
+          *ngSwitchCase="'eva'"
           [instance]="instance"
           [column]="col"
           #evaPopover
           (popoverOpen)="popoverOpen($event, evaPopover)">
         </app-eva>
-        <multi-eva
-          *ngSwitchCase="meva"
+        <app-multi-eva
+          *ngSwitchCase="'meva'"
           [instance]="instance"
           [column]="col"
           #mevaPopover
           (popoverOpen)="popoverOpen($event, mevaPopover)">
-        </multi-eva>
-        <ng-container *ngSwitchDefault>
+        </app-multi-eva>
+        <span *ngSwitchDefault>
           {{instance[col.rdfField]}}
-        </ng-container>  
+        </span>
       </ng-container>
     </mat-cell>
   </ng-container>

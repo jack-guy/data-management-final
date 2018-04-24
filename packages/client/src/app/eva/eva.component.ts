@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, Input, HostListener } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
@@ -8,6 +8,11 @@ import { SatPopover } from '@ncstate/sat-popover';
 })
 export class EvaComponent implements OnInit {
   @ViewChild('evaPopover') evaPopover: SatPopover;
+  @HostListener('document:click', ['$event']) clickedOutside($event) {
+    if (this.evaPopover && this.evaPopover.isOpen()) {
+      this.evaPopover.close();
+    }
+  }
 
   @Input() instance;
   @Input() column;
@@ -26,12 +31,14 @@ export class EvaComponent implements OnInit {
   open (e: MouseEvent) {
     e.stopPropagation();
     this.evaPopover.toggle();
-    if (this.evaPopover.isOpen) {
+    if (this.evaPopover.isOpen()) {
       this.popoverOpen.emit(null);
     }
   }
 
   close () {
-    this.evaPopover.close();
+    if (this.evaPopover && this.evaPopover.isOpen()) {
+      this.evaPopover.close();
+    }
   }
 }
