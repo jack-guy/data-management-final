@@ -1,54 +1,9 @@
-import { Connection, query } from 'stardog';
-
-const connection = new Connection({
-  username: 'admin',
-  password: 'admin',
-  endpoint: 'http://localhost:5820'
-});
-
-// const res = query.execute(
-//   connection,
-//   'companyDB',
-//   `
-//   prefix schema: <http://schema.org/>
-//   prefix : <http://Carnot.org/>
-
-//   SELECT * WHERE {
-//     ?i a :Pairing .
-//     ?i ?p ?o
-//   }
-//   order by ?i ?p
-//   `,
-//   'application/sparql-results+json' as any,
-//   // 'application/rdf+xml',
-//   // 'application/ld+json',
-//   { limit: 10, offset: 0 }
-// ).then(({ body }) => {
-//   console.log(body.results.bindings);
-// }).catch((e) => {
-//   console.log('ERROR', e);
-// })
-
-const test = query.graphql.execute(
-  connection,
-  'companyDB',
-  `
-  query withPrefixes @prefix(carnot: "http://Carnot.org/") {
-    carnot_Employee {
-      carnot_id
-      schema_name @optional
-    }
-  }
-  `,
-  { '@reasoning': true },
-  { limit: 10, offset: 0 }
-).then(({ body }) => {
-  console.log(body);
-})
+import { Connection, query, db } from 'stardog';
 
 
 export abstract class Input {
   abstract inputType: string;
+  abstract schema: string;
   label: string;
   constructor (props) {
     Object.assign(this, props);
@@ -57,6 +12,7 @@ export abstract class Input {
 
 export class TextInput extends Input {
   inputType = 'text';
+  schema = 'xsd:string';
   label: string;
   minLength?: number;
   maxLength?: number;
@@ -64,38 +20,45 @@ export class TextInput extends Input {
 
 export class TextareaInput extends TextInput {
   inputType = 'textarea';
+  schema = 'xsd:string';
 }
 
 export class BoolInput extends Input {
   inputType = 'bool';
+  schema = 'xsd:boolean';
 }
 
 export class DateInput extends Input {
   inputType = 'date';
+  schema = 'xsd:date';
   minDate?: Date;
   maxDate?: Date;
 }
 
 export class SelectInput extends Input {
   inputType = 'select';
+  schema = 'xsd:string';
   values: string[];
   default?: string;
 }
 
 export class NumberInput extends Input {
   inputType = 'number';
+  schema = 'xsd:number';
   min?: number;
   max?: number;
 }
 
 export class EvaInput extends Input {
   inputType = 'eva';
+  schema = null;
   rdfType: string;
   listField: string;
 }
 
 export class MevaInput extends Input {
   inputType = 'meva';
+  schema = null;
   rdfType: string;
   listField: string;
 }
@@ -129,46 +92,46 @@ enum Properties {
 
 const schema_name_input = new TextInput({
   label: 'Name',
-  maxLength: 50
+  maxLength: 50,
 });
 const schema_cv_input = new TextareaInput({
   label: 'Resume',
-  maxLength: 4096
+  maxLength: 4096,
 });
 const schema_gender_input = new SelectInput({
   label: 'Gender',
-  values: [ 'Male', 'Female' ]
+  values: [ 'Male', 'Female' ],
 });
 const schema_description_input = new TextareaInput({
   label: 'Description',
-  maxLength: 1024
+  maxLength: 1024,
 });
 const schema_startDate_input = new DateInput({
   label: 'Start Date',
 });
 const schema_endDate_input = new DateInput({
-  label: 'End Date'
+  label: 'End Date',
 });
 const carnot_type_input = new TextInput({
   label: 'Type',
-  maxLength: 50
+  maxLength: 50,
 });
 const carnot_missionStatement_input = new TextareaInput({
   label: 'Mission Statement',
-  maxLength: 100
+  maxLength: 100,
 });
 const carnot_dob_input = new DateInput({
   label: 'Date of Birth',
-  maxDate: new Date()
+  maxDate: new Date(),
 });
 const carnot_education_input = new SelectInput({
   label: 'Education',
-  values: ['Some High School', 'Diploma', 'Bachelors', 'Masters', 'Doctorate']
+  values: ['Some High School', 'Diploma', 'Bachelors', 'Masters', 'Doctorate'],
 });
 const carnot_ssnum_input = new TextInput({
   label: 'Social Security Number',
   minLength: 9,
-  maxLength: 9
+  maxLength: 9,
 });
 const carnot_citizen_input = new BoolInput({
   label: 'Citizen',
@@ -692,6 +655,138 @@ app.get('/types', (req, res) => {
       })),
     };
   }));
+});
+
+
+
+const connection = new Connection({
+  username: 'admin',
+  password: 'admin',
+  endpoint: 'http://localhost:5820'
+});
+
+// const res = query.execute(
+//   connection,
+//   'companyDB',
+//   `
+//   prefix schema: <http://schema.org/>
+//   prefix : <http://Carnot.org/>
+
+//   SELECT * WHERE {
+//     ?i a :Pairing .
+//     ?i ?p ?o
+//   }
+//   order by ?i ?p
+//   `,
+//   'application/sparql-results+json' as any,
+//   // 'application/rdf+xml',
+//   // 'application/ld+json',
+//   { limit: 10, offset: 0 }
+// ).then(({ body }) => {
+//   console.log(body.results.bindings);
+// }).catch((e) => {
+//   console.log('ERROR', e);
+// })
+
+const test = query.graphql.execute(
+  connection,
+  'companyDB',
+  `
+  query withPrefixes @prefix(carnot: "http://Carnot.org/") {
+    carnot_Employee {
+      carnot_id
+      schema_name @optional
+    }
+  }
+  `,
+  { '@reasoning': true },
+  { limit: 10, offset: 0 }
+).then(({ body }) => {
+  console.log(body);
+})
+
+// http://Carnot.org/Consultant/http://Carnot.org/Consultant1
+/*
+. carnot:Consultant2
+rdf:type carnot:Consultant ;
+schema:name "Annie"^^xsd:string ;
+carnot:dob "1995-02-03"^^xsd:date ;
+carnot:education "Bachelors"^^xsd:string ;
+carnot:ssnum "555-65-4233"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+schema:cv "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nisl nec lacus ultricies malesuada."^^xsd:string ;
+carnot:married "true"^^xsd:boolean ;
+*/
+
+const prefixes = {
+  "carnot": "http://Carnot.org/",
+  "schema":  "http://schema.org/",
+  "xsd": "http://www.w3.org/2001/XMLSchema#",
+};
+
+const normalizeToPrefix = (x: string) => {
+  return `${x.split('_')[0]}:${x.split('_')[1]}`;
+};
+
+const normalizeToIRI = (x: string) => {
+  return `${prefixes[x.split('_')[0]]}${x.split('_')[1]}`;
+};
+
+/*
+  type: 'carnot_Consultant',
+  {
+    iriPath: 'Consultant3',
+    data: [{
+      'schema': 'xsd:date',
+      'value': '123123',
+      'field': 'carnot:dob'
+    }]
+  }
+*/
+app.use(express.json());
+app.post('/create/:rdfType', async (req, res) => {
+  const rdfType = normalizeToPrefix(req.params['rdfType']);
+  const iriPath = req.body.iriPath;
+  const data = req.body.data;
+
+  const putRes = await db.graph.doPut(
+    connection,
+    'companyDB',
+    JSON.stringify({
+      "@context": { ...prefixes },
+      "@id": `carnot:${iriPath}`,
+      "@type": rdfType,
+      ...data.reduce((prev, val) => {
+        return {
+          ...prev,
+          [val.field]: {
+            '@value': val.value,
+            '@type': val.schema
+          }
+        };
+      }, {})
+      // "schema:name": "Jack",
+      // "carnot:dob": {
+      //   "@value": "1995-02-03",
+      //   "@type": "xsd:date"
+      // }
+    }),
+    `${normalizeToIRI(rdfType)}http://Carnot.org/${iriPath}`
+    // `http://Carnot.org/Consultant/http://Carnot.org/Consultant3`,
+  );
+
+  if (!putRes.ok) {
+    console.log(putRes);
+    return res.json({
+      'success': false,
+      ...putRes.body
+    }).status(400).send();
+  }
+
+  return res.json({
+    'success': true
+  }).send();
 });
 
 app.listen(4201, '127.0.0.1', function () {

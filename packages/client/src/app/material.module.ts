@@ -15,7 +15,10 @@ import {
   MatDialogModule,
   MatCardModule,
   MatChipsModule,
+  MatDatepickerModule,
+  MatSelectModule
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import {
   SatPopoverModule
@@ -35,7 +38,10 @@ const MATERIAL_COMPONENTS = [
   MatInputModule,
   MatDialogModule,
   MatCardModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatMomentDateModule,
 ];
 
 @NgModule({

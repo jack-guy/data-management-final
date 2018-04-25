@@ -1,0 +1,5 @@
+mutation create($foo: String!)  @prefix(carnot: "http://Carnot.org/") {
+    carnot_Company(schema_name: $foo) {
+        schema_name
+    }
+}

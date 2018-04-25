@@ -1,46 +1,59 @@
 <h1 mat-dialog-title>Create {{ type.name }}</h1>
 <mat-dialog-content>
   <form class="create-form">
-    <mat-form-field *ngFor="let input of type.inputs">
+    <mat-form-field>
+      <input matInput [(ngModel)]="iriPath" placeholder="IRI" type="text">
+      <span matPrefix>http://Carnot.org/</span>
+    </mat-form-field>
+    <ng-container *ngFor="let input of type.inputs">
       <ng-container [ngSwitch]="input.inputType">
-        <input
-          matInput
-          *ngSwitchCase="'text'"
-          [placeholder]="input.label"
-          [minLength]="input.minLength"
-          [maxLength]="input.maxLength">
-        <textarea
-          matInput
-          *ngSwitchCase="'textarea'"
-          [placeholder]="input.label"
-          [minLength]="input.minLength"
-          [maxLength]="input.maxLength"></textarea>
+        <mat-form-field *ngSwitchCase="'text'">
+          <input
+            matInput
+            [placeholder]="input.label"
+            [minLength]="input.minLength"
+            [maxLength]="input.maxLength">
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'textarea'">
+          <textarea
+            matInput
+            [placeholder]="input.label"
+            [minLength]="input.minLength"
+            [maxLength]="input.maxLength"></textarea>
+        </mat-form-field>
         <mat-checkbox *ngSwitchCase="'bool'">
           {{input.label}}
         </mat-checkbox>
-        <ng-container *ngSwitchCase="'date'">
-          <input [matDatepicker]="datePicker">
+        <mat-form-field *ngSwitchCase="'date'">
+          <input matInput [matDatepicker]="datePicker" [placeholder]="input.label">
+          <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker #datePicker></mat-datepicker>
-        </ng-container>
-        <mat-select *ngSwitchCase="'select'" [placeholder]="input.label">
-          <mat-option *ngFor="let value of input.values" [value]="value">
-            {{ value }}
-          </mat-option>
-        </mat-select>
-        <input
-          matInput
-          type="number"
-          *ngSwitchCase="'number'"
-          [placeholder]="input.label"
-          [min]="input.min"
-          [max]="input.max">
-        <mat-select *ngSwitchCase="'eva'" [placeholder]="input.label">
-          <!-- <mat-option *ngFor="let value of input.values" [value]="value">
-            {{ value }}
-          </mat-option> -->
-        </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'select'">
+          <mat-select [placeholder]="input.label">
+            <mat-option *ngFor="let value of input.values" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'number'">
+          <input
+            matInput
+            type="number"
+            *ngSwitchCase="'number'"
+            [placeholder]="input.label"
+            [min]="input.min"
+            [max]="input.max">
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'eva'">
+          <mat-select [placeholder]="input.label">
+            <!-- <mat-option *ngFor="let value of input.values" [value]="value">
+              {{ value }}
+            </mat-option> -->
+          </mat-select>
+        </mat-form-field>
       </ng-container>
-    </mat-form-field>
+    </ng-container>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

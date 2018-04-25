@@ -3,5 +3,13 @@
 @import "~normalize.css/normalize";
 
 .button-no-focus .mat-button-focus-overlay {
-background-color: transparent !important;
+    background-color: transparent !important;
+}
+
+.mat-dialog-content {
+    max-height: 40vh !important;
+}
+
+.mat-dialog-container {
+    height: auto !important;
 }
