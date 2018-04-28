@@ -1,0 +1,69 @@
+#Constraint in Terp syntax:
+#carnot:Employee rdfs:subClassOf (carnot:employeeDepartment max 1 :Department)
+
+#prefix carnot: <http://Carnot.org/>
+@prefix carnot: <http://Carnot.org/> .
+
+# 1. Employee has at most one department
+carnot:Employee rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:employeeDepartment;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Department
+	] .
+
+# 2. Employee has at most one assignment
+carnot:Employee rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:employeeAssignment;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Assignment
+	] .
+
+# 3. A department has at most one manager
+carnot:Department rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:departmentManager;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Manager
+	] .
+
+# 4. An employee has at most one company
+carnot:Employee rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:employeeCompany;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Company
+	] .
+
+# 5. A pairing can only have one assignment
+carnot:Pairing rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:pairAssignment;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Assignment
+	] .
+
+# 6. A pairing can only have one project
+carnot:Pairing rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:pairProject;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Project
+	] .
+
+# 7. A pair can only have one date range
+carnot:Pairing rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:pairDateRange;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:DateRange
+	] .
+
+# 8. A employee can only have one manager
+carnot:Employee rdfs:subClassOf
+	[ a owl:Restriction ;
+		owl:onProperty carnot:employeeManager;
+		owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:onClass carnot:Manager
+	] .

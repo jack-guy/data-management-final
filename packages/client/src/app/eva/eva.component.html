@@ -14,7 +14,7 @@
     <app-eva-preview
       class="eva-popover"
       (click)="popoverClick($event)"
-      [rdfType]="column.rdfType"
+      [rdfType]="column.schema"
       [listField]="column.listField"
       [listFieldVal]="instance[column.rdfField][column.listField]"
     ></app-eva-preview>

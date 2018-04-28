@@ -16,13 +16,27 @@ import {
   MatCardModule,
   MatChipsModule,
   MatDatepickerModule,
-  MatSelectModule
+  MatSelectModule,
+  MatProgressBarModule,
+  MAT_DATE_FORMATS
 } from '@angular/material';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 
 import {
   SatPopoverModule
 } from '@ncstate/sat-popover'; 
+
+export const DATE_FORMATS = {
+  parse: {
+    dateInput: 'YYYY-MM-DD',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 const MATERIAL_COMPONENTS = [
   MatButtonModule,
@@ -41,12 +55,16 @@ const MATERIAL_COMPONENTS = [
   MatChipsModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatMomentDateModule,
+  MomentDateModule,
+  MatProgressBarModule,
 ];
 
 @NgModule({
   imports: [ ...MATERIAL_COMPONENTS ],
   exports: [ ...MATERIAL_COMPONENTS ],
-  declarations: []
+  declarations: [],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
+  ]
 })
 export class MaterialModule { }

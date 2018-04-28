@@ -20,6 +20,26 @@
     overflow-y: scroll;
 }
 
+.options-popover-card {
+    padding: 0;
+
+    > mat-nav-list {
+        padding-top: 0;
+    }
+
+    mat-icon {
+        padding-left: 0 !important;
+    }
+}
+
 .filter-button {
     margin-right: 0.5rem;
+}
+
+.options-cell {
+    flex: 0 0 auto;
+
+    &.options-cell-header {
+        color: transparent;
+    }
 }

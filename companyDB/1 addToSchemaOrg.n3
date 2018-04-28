@@ -1,0 +1,112 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix carnot: <http://Carnot.org/> .
+
+carnot:Company
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Company" ;
+  rdfs:subClassOf schema:Corporation .
+
+carnot:TemporalThing
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Event" ;
+  rdfs:subClassOf schema:Thing .
+
+carnot:Event
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Event" ;
+  rdfs:subClassOf schema:Event .
+
+carnot:Employee
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Employee" ;
+  rdfs:subClassOf schema:Person .
+
+carnot:Manager
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Manager" ;
+  rdfs:subClassOf carnot:Employee .
+
+carnot:FormerManager
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Former Manager" ;
+  rdfs:subClassOf carnot:Manager .
+
+carnot:FormerEmployee
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Former Employee" ;
+  rdfs:subClassOf carnot:Employee .
+
+carnot:OutsideEmployee
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Outside Employee" ;
+  rdfs:subClassOf schema:Person .
+
+carnot:Consultant
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Consultant" ;
+  rdfs:subClassOf carnot:OutsideEmployee .
+
+carnot:Department
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Department" ;
+  rdfs:subClassOf schema:Organization .
+
+carnot:Project
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Project" ;
+  rdfs:subClassOf schema:CreativeWork .
+
+carnot:Assignment
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Assignment" ;
+  rdfs:subClassOf carnot:TemporalThing .
+
+carnot:Task
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Task" ;
+  rdfs:subClassOf carnot:Thing .
+
+carnot:Pairing
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "Pairing" ;
+  rdfs:subClassOf carnot:Event .
+
+carnot:DateRange
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:label "DateRange" ;
+  rdfs:subClassOf schema:DateTime .
+
+
+# We added these
+carnot:companyEmployees owl:inverseOf carnot:employeeCompany .
+carnot:projectTasks owl:inverseOf carnot:taskProjects .
+carnot:dateRangePairs owl:inverseOf carnot:pairDateRange .
+carnot:managerEmployees owl:inverseOf carnot:employeeManager .
+carnot:managersDepartment owl:inverseOf carnot:departmentManager .
+
+
+carnot:departmentEmployees owl:inverseOf carnot:employeeDepartment .
+carnot:assignmentEmployees owl:inverseOf carnot:employeeAssignment .
+carnot:pairAssignment      owl:inverseOf carnot:assignmentPairs .
+carnot:pairProject         owl:inverseOf carnot:projectPairs .
+carnot:pairDepartment      owl:inverseOf carnot:departmentPairs .

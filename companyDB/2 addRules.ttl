@@ -1,0 +1,41 @@
+@prefix rule: <tag:stardog:api:rule:> .
+
+[] a rule:SPARQLRule;
+rule:content """
+prefix carnot: <http://Carnot.org/> 
+	IF {
+	  ?e a carnot:Employee .
+	  ?e carnot:employeeDepartment  ?d .
+	  ?a carnot:assignmentEmployees ?e .
+	  ?a carnot:assignmentPairs     ?p
+	}
+	THEN {
+		?p carnot:pairDepartment ?d 
+	}
+""".
+
+[] a rule:SPARQLRule;
+rule:content """
+prefix carnot: <http://Carnot.org/> 
+	IF {
+		?m a carnot:Manager .
+		?m carnot:employeeDepartment ?d .
+		# FILTER NOT EXISTS { ?m a carnot:FormerManager }
+	}
+	THEN {
+		?d carnot:departmentManager ?m
+	}
+""".
+
+[] a rule:SPARQLRule;
+rule:content """
+prefix carnot: <http://Carnot.org/> 
+	IF {
+	  ?e a carnot:Event .
+	  BIND (now() as ?t) .
+	  #FILTER NOT EXISTS { ?e schema:startDate ?z } 
+	}
+	THEN {
+		?e schema:startDate ?t
+	}
+""".

@@ -49,6 +49,14 @@ export class MultiEvaComponent implements OnInit {
     }
   }
 
+  getItems (instance, column) {
+    return (
+      this.instance[this.column.rdfField] instanceof Array
+    )
+      ? this.instance[this.column.rdfField]
+      : [this.instance[this.column.rdfField]];
+  }
+
 
   close () {
     this.popover.close();

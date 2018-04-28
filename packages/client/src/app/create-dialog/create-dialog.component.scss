@@ -1,13 +1,33 @@
+@import "../../sass/_variables";
+
+$error: rgba(map-get($accent-palette, 800), 0.9);
+
+$config: mat-typography-config();
+
+
 .create-form {
     width: 100%;
 
-    > mat-form-field {
+    mat-form-field {
         width: 100%;
         margin-bottom: 0.5rem;
     }
-    > mat-checkbox {
+    
+    mat-checkbox {
         width: 100%;
         display: block;
         margin-bottom: 1rem;
     }
+}
+
+
+.error-alert {
+    padding: 0.5rem;
+    border: solid 1px;
+    color: $error;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: mat-font-size($config, body-1);
+    box-sizing: border-box;
+    font-family: mat-font-family($config);
 }

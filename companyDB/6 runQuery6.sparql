@@ -1,0 +1,22 @@
+prefix schema: <http://schema.org/>
+prefix : <http://Carnot.org/>
+
+SELECT (?v_1 AS ?StartDate)
+       (?v_2 AS ?EndDate)
+       (?v_3 AS ?PairName)
+	 (?v_4 AS ?AssignmentName)
+	 (?v_5 AS ?EmployeeName)
+       (?p AS ?Pair)
+  	 (?a   AS ?Assignment)
+       (?e AS ?Employee)
+       
+
+WHERE { ?dr a :DateRange .
+      ?dr schema:startDate ?v_1 .
+      ?dr schema:endDate ?v_2 .
+      ?dr :dateRangePairs ?p .
+      ?p  schema:name ?v_3 .
+      ?p  :assignmentPairs ?a .
+      ?a  schema:name ?v_4 .
+      ?a  :assignmentEmployees ?e .
+      ?e  schema:name ?v_5 .}

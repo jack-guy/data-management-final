@@ -1,0 +1,361 @@
+prefix schema: <http://schema.org/>
+prefix carnot: <http://Carnot.org/>
+
+# Employee 1
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Bobby".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Bobby".
+  ?d a carnot:Department .
+  ?d schema:name "Research"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Bobby".
+  ?a a carnot:Assignment .
+  ?a schema:name "a1"
+}
+;
+# insert { ?e carnot:employeeManager ?a }
+# where {
+#   ?e a carnot:Employee .
+#   ?e schema:name "Bobby".
+#   ?a a carnot:Manager .
+#   ?a schema:name "Jack"
+# }
+# ;
+
+# Employee 2
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Julia".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Julia".
+  ?d a carnot:Department .
+  ?d schema:name "Accounting"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:Employee .
+  ?e schema:name "Julia".
+  ?a a carnot:Assignment .
+  ?a schema:name "a9"
+}
+;
+
+# Former Employee 1
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mark".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mark".
+  ?d a carnot:Department .
+  ?d schema:name "Research"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mark".
+  ?a a carnot:Assignment .
+  ?a schema:name "a11"
+}
+;
+
+# Former Employee 2
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mary".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mary".
+  ?d a carnot:Department .
+  ?d schema:name "Accounting"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:FormerEmployee .
+  ?e schema:name "Mary".
+  ?a a carnot:Assignment .
+  ?a schema:name "a8"
+}
+;
+
+# Consultant1
+insert { ?e carnot:consultantCompany ?a }
+where {
+  ?e a carnot:Consultant .
+  ?e schema:name "Jimmy".
+  ?a a carnot:Company .
+  ?a schema:name "Definitely Not Acme"
+}
+;
+
+# Consultant2
+insert { ?e carnot:consultantCompany ?a }
+where {
+  ?e a carnot:Consultant .
+  ?e schema:name "Annie".
+  ?a a carnot:Company .
+  ?a schema:name "Definitely Not Acme"
+}
+;
+
+# OutsideEmployee1
+insert { ?e carnot:outsideEmployeeCompany ?a }
+where {
+  ?e a carnot:OutsideEmployee .
+  ?e schema:name "Bob".
+  ?a a carnot:Company .
+  ?a schema:name "Definitely Not Acme"
+}
+;
+
+# OutsideEmployee2
+insert { ?e carnot:outsideEmployeeCompany ?a }
+where {
+  ?e a carnot:OutsideEmployee .
+  ?e schema:name "Sarah".
+  ?a a carnot:Company .
+  ?a schema:name "Definitely Not Acme"
+}
+;
+
+# Manager1
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Jack".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Jack".
+  ?d a carnot:Department .
+  ?d schema:name "Research"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Jack".
+  ?a a carnot:Assignment .
+  ?a schema:name "a4"
+}
+;
+
+# Manager2
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Sarah".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Sarah".
+  ?d a carnot:Department .
+  ?d schema:name "Accounting"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:Manager .
+  ?e schema:name "Sarah".
+  ?a a carnot:Assignment .
+  ?a schema:name "a5"
+}
+;
+
+## FormerManager1
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Jackson".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Jackson".
+  ?d a carnot:Department .
+  ?d schema:name "Research"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Jackson".
+  ?a a carnot:Assignment .
+  ?a schema:name "a10"
+}
+;
+
+
+## FormerManager2
+insert { ?e carnot:employeeCompany ?a }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Tessa".
+  ?a a carnot:Company .
+  ?a schema:name "Acme"
+}
+;
+insert { ?e carnot:employeeDepartment ?d }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Tessa".
+  ?d a carnot:Department .
+  ?d schema:name "Accounting"
+}
+;
+insert { ?e carnot:employeeAssignment ?a }
+where {
+  ?e a carnot:FormerManager .
+  ?e schema:name "Tessa".
+  ?a a carnot:Assignment .
+  ?a schema:name "a3"
+}
+;
+
+## Project 1
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Build Apex App".
+  ?a a carnot:Task .
+  ?a schema:name "Gather requirements"
+}
+;
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Build Apex App".
+  ?a a carnot:Task .
+  ?a schema:name "Design"
+}
+;
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Build Apex App".
+  ?a a carnot:Task .
+  ?a schema:name "Implement"
+}
+;
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Build Apex App".
+  ?a a carnot:Task .
+  ?a schema:name "Deploy"
+}
+;
+
+# Project 2
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Create Board Presentation".
+  ?a a carnot:Task .
+  ?a schema:name "Create a powerpoint"
+}
+;
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Create Board Presentation".
+  ?a a carnot:Task .
+  ?a schema:name "Gather requirements"
+}
+;
+insert { ?e carnot:projectTasks ?a }
+where {
+  ?e a carnot:Project .
+  ?e schema:name "Create Board Presentation".
+  ?a a carnot:Task .
+  ?a schema:name "Design"
+}
+;
+
+# Assignment Pairings
+insert data { carnot:assignment1 carnot:pairAssignment carnot:pairing1 };
+insert data { carnot:assignment2 carnot:pairAssignment carnot:pairing2 };
+insert data { carnot:assignment3 carnot:pairAssignment carnot:pairing3 };
+insert data { carnot:assignment4 carnot:pairAssignment carnot:pairing4 };
+insert data { carnot:assignment5 carnot:pairAssignment carnot:pairing5 };
+insert data { carnot:assignment6 carnot:pairAssignment carnot:pairing6 };
+insert data { carnot:assignment7 carnot:pairAssignment carnot:pairing7 };
+insert data { carnot:assignment8 carnot:pairAssignment carnot:pairing8 };
+insert data { carnot:assignment9 carnot:pairAssignment carnot:pairing9 };
+insert data { carnot:assignment10 carnot:pairAssignment carnot:pairing10 };
+insert data { carnot:assignment11 carnot:pairAssignment carnot:pairing11 };
+
+
+# Pairing Projects
+
+insert data { carnot:pairing1 carnot:pairProject carnot:project1 };
+insert data { carnot:pairing2 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing3 carnot:pairProject carnot:project1 };
+insert data { carnot:pairing4 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing5 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing6 carnot:pairProject carnot:project1 };
+insert data { carnot:pairing7 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing8 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing9 carnot:pairProject carnot:project2 };
+insert data { carnot:pairing10 carnot:pairProject carnot:project1 };
+insert data { carnot:pairing11 carnot:pairProject carnot:project2 };
+
+# Pairing Date Ranges
+
+insert data { carnot:pairing1 carnot:pairDateRange carnot:dateRange1 };
+insert data { carnot:pairing2 carnot:pairDateRange carnot:dateRange4 };
+insert data { carnot:pairing3 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing4 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing5 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing6 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing7 carnot:pairDateRange carnot:dateRange3 };
+insert data { carnot:pairing8 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing9 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing10 carnot:pairDateRange carnot:dateRange2 };
+insert data { carnot:pairing11 carnot:pairDateRange carnot:dateRange2 };

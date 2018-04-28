@@ -1,0 +1,16 @@
+prefix schema: <http://schema.org/>
+prefix : <http://Carnot.org/>
+
+SELECT (?v_1 AS ?DepartmentName)
+       (?v_2 AS ?EmployeeName)
+       (?v_3 AS ?CompanyName)
+	   (?e   AS ?Employee)
+       (?c   AS ?Company)
+
+WHERE { ?d a :Department .
+        ?d schema:name ?v_1 .
+        ?d :departmentEmployees ?e .
+        ?e schema:name ?v_2 .
+        ?e :employeeCompany ?c .
+        ?c schema:name ?v_3 .
+}

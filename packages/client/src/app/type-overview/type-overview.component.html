@@ -13,7 +13,9 @@
   <button
     mat-raised-button
     color="primary"
-    (click)="create()"
+    routerLink="."
+    [queryParams]="{create: true}"
+    *ngIf="(type$ | async)?.mutable"
   >
     Create
   </button>
@@ -25,7 +27,8 @@
     <mat-card class="filter-popover-card">
       <mat-selection-list
         #filterList
-        [(ngModel)]="displayedColumns"
+        [ngModel]="displayedColumns"
+        (ngModelChange)="filterOnChange($event)"
         (click)="$event.stopPropagation()"
       >
         <mat-list-option
@@ -57,12 +60,51 @@
           [instance]="instance"
           [column]="col"
           #mevaPopover
-          (popoverOpen)="popoverOpen($event, mevaPopover)">
+        (popoverOpen)="popoverOpen($event, mevaPopover)">
         </app-multi-eva>
         <span *ngSwitchDefault>
           {{instance[col.rdfField]}}
         </span>
       </ng-container>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="options">
+    <mat-header-cell class="options-cell options-cell-header" *matHeaderCellDef>
+      <button mat-icon-button disabled><mat-icon>more_vert</mat-icon></button>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let instance" class="options-cell">
+      <button
+        mat-icon-button
+        [satPopoverAnchorFor]="optionsPopover"
+        (click)="openOptionsPopover($event, optionsPopover)"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+        
+      <sat-popover
+        #optionsPopover
+        horizontalAlign="before"
+      >
+        <mat-card class="options-popover-card">
+          <mat-nav-list dense>
+            <a
+              mat-list-item
+              [routerLink]="['/types', (type$ | async)?.rdfType]"
+            >
+              <mat-icon matListIcon>edit</mat-icon>
+              <span>Update</span>
+            </a>
+            <mat-divider></mat-divider>
+            <a
+              mat-list-item
+              (click)="deleteItem(instance)"
+            >
+              <mat-icon matListIcon>delete</mat-icon>
+              <span>Delete</span>
+            </a>
+          </mat-nav-list>
+        </mat-card>
+      </sat-popover>
     </mat-cell>
   </ng-container>
 

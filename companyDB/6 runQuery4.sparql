@@ -1,0 +1,21 @@
+prefix schema: <http://schema.org/>
+prefix : <http://Carnot.org/>
+
+SELECT (?v_1 AS ?ProjectName)
+       (?v_2 AS ?PairName)
+       (?v_3 AS ?AssignmentName)
+	 (?v_4 AS ?EmployeeName)
+  	 (?p AS ?Pair)
+       (?a   AS ?Assignment)
+       (?e AS ?Employee)
+
+WHERE { ?pp a :Project .
+       ?pp schema:name ?v_1 .
+       ?pp :projectPairs ?p .
+       ?p  schema:name ?v_2 .
+       ?p  :assignmentPairs ?a .
+       ?a  schema:name ?v_3 .
+       ?a  :assignmentEmployees ?e .
+       ?e  schema:name ?v_4 .
+       
+}

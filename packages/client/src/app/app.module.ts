@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
@@ -24,6 +24,7 @@ import {
 import { EvaPreviewComponent } from './eva-preview/eva-preview.component';
 import { MultiEvaComponent } from './multi-eva/multi-eva.component';
 import { EvaComponent } from './eva/eva.component'; 
+import { GraphService } from './graph.service';
 
 
 @Injectable()
@@ -65,6 +66,7 @@ export class TypeOverviewNameResolver implements Resolve<any> {
     SatPopoverModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -74,11 +76,25 @@ export class TypeOverviewNameResolver implements Resolve<any> {
       {
         path: 'types/:id',
         component: TypeOverviewComponent,
+        data: {
+          showCreate: false,
+        },
         resolve: {
           pageName: TypeOverviewNameResolver,
           type: TypeOverviewResolver
         },
       },
+      // {
+      //   path: 'types/:id/create',
+      //   component: TypeOverviewComponent,
+      //   data: {
+      //     showCreate: true,
+      //   },
+      //   resolve: {
+      //     pageName: TypeOverviewNameResolver,
+      //     type: TypeOverviewResolver
+      //   },
+      // },
       {
         path: 'home',
         component: HomeComponent,
@@ -94,6 +110,7 @@ export class TypeOverviewNameResolver implements Resolve<any> {
   ],
   providers: [
     TypesService,
+    GraphService,
     TypeOverviewNameResolver,
     TypeOverviewResolver
   ],

@@ -1,8 +1,10 @@
-<h1 mat-dialog-title>Create {{ type.name }}</h1>
-<mat-dialog-content>
-  <form class="create-form">
+<form class="create-form" [formGroup]="form" (submit)="create($event)">
+  <h1 mat-dialog-title>Create {{ type.name }}</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <div class="error-alert" *ngIf="errorMessage">{{errorMessage}}</div>
+  <mat-dialog-content>
     <mat-form-field>
-      <input matInput [(ngModel)]="iriPath" placeholder="IRI" type="text">
+      <input matInput formControlName="iriPath" placeholder="IRI" type="text">
       <span matPrefix>http://Carnot.org/</span>
     </mat-form-field>
     <ng-container *ngFor="let input of type.inputs">
@@ -10,6 +12,7 @@
         <mat-form-field *ngSwitchCase="'text'">
           <input
             matInput
+            [formControlName]="input.rdfField"
             [placeholder]="input.label"
             [minLength]="input.minLength"
             [maxLength]="input.maxLength">
@@ -17,20 +20,25 @@
         <mat-form-field *ngSwitchCase="'textarea'">
           <textarea
             matInput
+            [formControlName]="input.rdfField"
             [placeholder]="input.label"
             [minLength]="input.minLength"
             [maxLength]="input.maxLength"></textarea>
         </mat-form-field>
-        <mat-checkbox *ngSwitchCase="'bool'">
+        <mat-checkbox *ngSwitchCase="'bool'" [formControlName]="input.rdfField">
           {{input.label}}
         </mat-checkbox>
         <mat-form-field *ngSwitchCase="'date'">
-          <input matInput [matDatepicker]="datePicker" [placeholder]="input.label">
+          <input
+            matInput
+            [matDatepicker]="datePicker"
+            [placeholder]="input.label"
+            [formControlName]="input.rdfField">
           <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker #datePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field *ngSwitchCase="'select'">
-          <mat-select [placeholder]="input.label">
+          <mat-select [placeholder]="input.label" [formControlName]="input.rdfField">
             <mat-option *ngFor="let value of input.values" [value]="value">
               {{ value }}
             </mat-option>
@@ -42,21 +50,30 @@
             type="number"
             *ngSwitchCase="'number'"
             [placeholder]="input.label"
+            [formControlName]="input.rdfField"
             [min]="input.min"
             [max]="input.max">
         </mat-form-field>
         <mat-form-field *ngSwitchCase="'eva'">
-          <mat-select [placeholder]="input.label">
-            <!-- <mat-option *ngFor="let value of input.values" [value]="value">
-              {{ value }}
-            </mat-option> -->
+          <mat-select [placeholder]="input.label" [formControlName]="input.rdfField">
+            <mat-option
+              *ngFor="let value of (evaQueries[input.rdfField] | async)"
+              [value]="value[input.listField]"
+            >
+              {{ value[input.listField] }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </ng-container>
     </ng-container>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-raised-button color="primary">Create</button>
-  <button mat-button (click)="onCancel()">Cancel</button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="loading || form.invalid"
+    >Create</button>
+    <button mat-button (click)="onCancel()" type="button">Cancel</button>
+  </mat-dialog-actions>
+</form>

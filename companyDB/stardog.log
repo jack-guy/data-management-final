@@ -1,0 +1,3 @@
+A valid Stardog license was not found.  The license file 'stardog-license-key.bin' should be in your Stardog Home directory '/mnt/c/Users/Jack/git/s18dbproject2-guy-he-hoang-huang'.
+Please visit http://stardog.com for information on how to obtain a license or run: 
+stardog-admin license register.

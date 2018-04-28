@@ -1,0 +1,8 @@
+prefix schema: <http://schema.org/>
+prefix : <http://Carnot.org/>
+
+SELECT * WHERE {
+  ?i a :Pairing .
+  ?i ?p ?o
+}
+order by ?i ?p

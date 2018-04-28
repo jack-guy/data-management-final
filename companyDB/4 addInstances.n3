@@ -1,0 +1,345 @@
+@prefix schema: <http://schema.org/> .
+@prefix carnot: <http://Carnot.org/>
+
+# Companies
+. carnot:company1
+rdf:type carnot:Company ;
+schema:name "Acme"^^xsd:string ;
+carnot:type "Public"^^xsd:string ;
+
+. carnot:company2
+rdf:type carnot:Company ;
+schema:name "Definitely Not Acme"^^xsd:string ;
+carnot:type "Public"^^xsd:string ;
+
+# Departments
+. carnot:department1
+rdf:type carnot:Department ;
+schema:name "Research"^^xsd:string ;
+carnot:missionStatement "Find good things."^^xsd:string ;
+
+. carnot:department2
+rdf:type carnot:Department ;
+schema:name "Accounting"^^xsd:string ;
+carnot:missionStatement "Numbers are fun."^^xsd:string ;
+
+# Consultants
+. carnot:Consultant1
+rdf:type carnot:Consultant ;
+schema:name "Jimmy"^^xsd:string ;
+carnot:dob "1973-09-04"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "123-45-4233"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+schema:cv "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nisl nec lacus ultricies malesuada."^^xsd:string ;
+carnot:married "true"^^xsd:boolean ;
+
+. carnot:Consultant2
+rdf:type carnot:Consultant ;
+schema:name "Annie"^^xsd:string ;
+carnot:dob "1995-02-03"^^xsd:date ;
+carnot:education "Bachelors"^^xsd:string ;
+carnot:ssnum "555-65-4233"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+schema:cv "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nisl nec lacus ultricies malesuada."^^xsd:string ;
+carnot:married "true"^^xsd:boolean ;
+
+# Outside Employees
+. carnot:OutsideEmployee1
+rdf:type carnot:OutsideEmployee ;
+schema:name "Bob"^^xsd:string ;
+carnot:dob "1972-12-02"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "123-45-4251"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+
+. carnot:OutsideEmployee2
+rdf:type carnot:OutsideEmployee ;
+schema:name "Sarah"^^xsd:string ;
+carnot:dob "1985-11-04"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "333-44-2222"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+
+# Employees
+
+. carnot:Employee1
+rdf:type carnot:Employee ;
+carnot:id "109"^^xsd:integer ;
+schema:name "Bobby"^^xsd:string ;
+carnot:dob "1972-09-04"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "123-45-4321"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+carnot:hiredate "2003-06-20"^^xsd:date ;
+carnot:salary "100000"^^xsd:integer ;
+
+. carnot:Employee2
+rdf:type carnot:Employee ;
+carnot:id "99"^^xsd:integer ;
+schema:name "Julia"^^xsd:string ;
+carnot:dob "1997-09-04"^^xsd:date ;
+carnot:education "Bachelors"^^xsd:string ;
+carnot:ssnum "111-44-7805"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "false"^^xsd:boolean ;
+carnot:hiredate "2015-06-20"^^xsd:date ;
+carnot:salary "70000"^^xsd:integer ;
+
+# Former Employees
+
+. carnot:formerEmployee1
+rdf:type carnot:FormerEmployee ;
+carnot:id "114"^^xsd:integer ;
+schema:name "Mark"^^xsd:string ;
+carnot:dob "1980-12-17"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "111-22-7777"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+carnot:hiredate "2004-05-17"^^xsd:date ;
+carnot:salary "110000"^^xsd:integer ;
+carnot:terminationreason "Insubordination"^^xsd:string ;
+carnot:leavestatus "TERMINATED"^^xsd:string ;
+carnot:lastday "2018-02-19"^^xsd:date ;
+
+. carnot:formerEmployee2
+rdf:type carnot:FormerEmployee ;
+carnot:id "115"^^xsd:integer ;
+schema:name "Mary"^^xsd:string ;
+carnot:dob "1982-12-17"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "111-22-8888"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "false"^^xsd:boolean ;
+carnot:married "false"^^xsd:boolean ;
+carnot:hiredate "2005-05-17"^^xsd:date ;
+carnot:salary "100000"^^xsd:integer ;
+carnot:terminationreason "Quit"^^xsd:string ;
+carnot:leavestatus "TERMINATED"^^xsd:string ;
+carnot:lastday "2018-02-19"^^xsd:date ;
+# Managers
+
+. carnot:manager1
+rdf:type carnot:Manager ;
+carnot:id "116"^^xsd:integer ;
+schema:name "Jack"^^xsd:string ;
+carnot:dob "1980-12-17"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "111-22-3333"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+carnot:hiredate "2004-05-17"^^xsd:date ;
+carnot:salary "110000"^^xsd:integer ;
+carnot:title "Research Manager"^^xsd:string ;
+
+. carnot:manager2
+rdf:type carnot:Manager ;
+carnot:id "117"^^xsd:integer ;
+schema:name "Sarah"^^xsd:string ;
+carnot:dob "1978-12-17"^^xsd:date ;
+carnot:education "PhD"^^xsd:string ;
+carnot:ssnum "111-22-4444"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+carnot:hiredate "2003-05-17"^^xsd:date ;
+carnot:salary "120000"^^xsd:integer ;
+carnot:title "Accounting Manager"^^xsd:string ;
+
+# Former Managers
+
+. carnot:formerManager1
+rdf:type carnot:FormerManager ;
+carnot:id "118"^^xsd:integer ;
+schema:name "Jackson"^^xsd:string ;
+carnot:dob "1980-12-17"^^xsd:date ;
+carnot:education "Masters"^^xsd:string ;
+carnot:ssnum "111-22-3333"^^xsd:string ;
+schema:gender "Male"^^xsd:string ;
+carnot:citizen "true"^^xsd:boolean ;
+carnot:married "true"^^xsd:boolean ;
+carnot:hiredate "2004-05-17"^^xsd:date ;
+carnot:salary "110000"^^xsd:integer ;
+carnot:title "Consumer Product Manager"^^xsd:string ;
+
+. carnot:formerManager2
+rdf:type carnot:FormerManager ;
+carnot:id "119"^^xsd:integer ;
+schema:name "Tessa"^^xsd:string ;
+carnot:dob "1978-12-17"^^xsd:date ;
+carnot:education "PhD"^^xsd:string ;
+carnot:ssnum "111-22-4444"^^xsd:string ;
+schema:gender "Female"^^xsd:string ;
+carnot:citizen "false"^^xsd:boolean ;
+carnot:married "false"^^xsd:boolean ;
+carnot:hiredate "2003-05-17"^^xsd:date ;
+carnot:salary "120000"^^xsd:integer ;
+carnot:title "Sales Manager"^^xsd:string ;
+
+# Assignments
+
+. carnot:assignment1
+rdf:type carnot:Assignment ;
+schema:name "a1"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+. carnot:assignment2
+rdf:type carnot:Assignment ;
+schema:name "a2"^^xsd:string ;
+carnot:status "Completed"^^xsd:string ;
+
+. carnot:assignment3
+rdf:type carnot:Assignment ;
+schema:name "a3"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+. carnot:assignment4
+rdf:type carnot:Assignment ;
+schema:name "a4"^^xsd:string ;
+carnot:status "Suspended"^^xsd:string ;
+
+. carnot:assignment5
+rdf:type carnot:Assignment ;
+schema:name "a5"^^xsd:string ;
+carnot:status "Suspended"^^xsd:string ;
+
+. carnot:assignment6
+rdf:type carnot:Assignment ;
+schema:name "a6"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+. carnot:assignment7
+rdf:type carnot:Assignment ;
+schema:name "a7"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+. carnot:assignment8
+rdf:type carnot:Assignment ;
+schema:name "a8"^^xsd:string ;
+carnot:status "Suspended"^^xsd:string ;
+
+. carnot:assignment9
+rdf:type carnot:Assignment ;
+schema:name "a9"^^xsd:string ;
+carnot:status "Suspended"^^xsd:string ;
+
+. carnot:assignment10
+rdf:type carnot:Assignment ;
+schema:name "a10"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+. carnot:assignment11
+rdf:type carnot:Assignment ;
+schema:name "a11"^^xsd:string ;
+carnot:status "In Progress"^^xsd:string ;
+
+# Pairings
+
+.carnot:pairing1
+rdf:type carnot:Pairing ;
+schema:name "p1"^^xsd:string ;
+.carnot:pairing2
+rdf:type carnot:Pairing ;
+schema:name "p2"^^xsd:string ;
+.carnot:pairing3
+rdf:type carnot:Pairing ;
+schema:name "p3"^^xsd:string ;
+.carnot:pairing4
+rdf:type carnot:Pairing ;
+schema:name "p4"^^xsd:string ;
+.carnot:pairing5
+rdf:type carnot:Pairing ;
+schema:name "p5"^^xsd:string ;
+.carnot:pairing6
+rdf:type carnot:Pairing ;
+schema:name "p6"^^xsd:string ;
+.carnot:pairing7
+rdf:type carnot:Pairing ;
+schema:name "p7"^^xsd:string ;
+.carnot:pairing8
+rdf:type carnot:Pairing ;
+schema:name "p8"^^xsd:string ;
+.carnot:pairing9
+rdf:type carnot:Pairing ;
+schema:name "p9"^^xsd:string ;
+.carnot:pairing10
+rdf:type carnot:Pairing ;
+schema:name "p10"^^xsd:string ;
+.carnot:pairing11
+rdf:type carnot:Pairing ;
+schema:name "p11"^^xsd:string ;
+
+# Projects
+
+. carnot:project1
+rdf:type carnot:Project ;
+schema:name "Build Apex App"^^xsd:string ;
+schema:description "Build a web application to manage company resources."^^xsd:string ;
+
+. carnot:project2
+rdf:type carnot:Project ;
+schema:name "Create Board Presentation"^^xsd:string ;
+schema:description "Create presentation to show shareholders during Q1 reporting."^^xsd:string ;
+
+
+# Tasks
+. carnot:task1
+rdf:type carnot:Task ;
+schema:name "Create a powerpoint"^^xsd:string ;
+schema:description "Present the findings from the project using Microsoft Powerpoint"^^xsd:string ;
+
+. carnot:task2
+rdf:type carnot:Task ;
+schema:name "Gather requirements"^^xsd:string ;
+schema:description "Figure out what the project requires"^^xsd:string ;
+
+. carnot:task3
+rdf:type carnot:Task ;
+schema:name "Design"^^xsd:string ;
+schema:description "Flesh out the project specifications"^^xsd:string ;
+
+. carnot:task4
+rdf:type carnot:Task ;
+schema:name "Implement"^^xsd:string ;
+schema:description "Make the project capable of all functionality specified in design"^^xsd:string ;
+
+. carnot:task5
+rdf:type carnot:Task ;
+schema:name "Deploy"^^xsd:string ;
+schema:description "Make the project publically available"^^xsd:string ;
+
+# Date Ranges
+. carnot:dateRange1
+rdf:type carnot:DateRange ;
+schema:startDate "2018-02-23"^^xsd:date ;
+schema:endDate "2018-03-14"^^xsd:date ;
+
+. carnot:dateRange2
+rdf:type carnot:DateRange ;
+schema:startDate "2018-02-28"^^xsd:date ;
+schema:endDate "2018-03-17"^^xsd:date ;
+
+. carnot:dateRange3
+rdf:type carnot:DateRange ;
+schema:startDate "2018-03-14"^^xsd:date ;
+schema:endDate "2018-03-23"^^xsd:date ;
+
+. carnot:dateRange4
+rdf:type carnot:DateRange ;
+schema:startDate "2018-02-20"^^xsd:date ;
+schema:endDate "2018-02-23"^^xsd:date ;
+
+.
+

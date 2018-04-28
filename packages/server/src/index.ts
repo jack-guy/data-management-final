@@ -44,22 +44,20 @@ export class SelectInput extends Input {
 
 export class NumberInput extends Input {
   inputType = 'number';
-  schema = 'xsd:number';
+  schema = 'xsd:integer';
   min?: number;
   max?: number;
 }
 
 export class EvaInput extends Input {
   inputType = 'eva';
-  schema = null;
-  rdfType: string;
+  schema: string;
   listField: string;
 }
 
 export class MevaInput extends Input {
   inputType = 'meva';
-  schema = null;
-  rdfType: string;
+  schema: string;
   listField: string;
 }
 
@@ -88,6 +86,18 @@ enum Properties {
   carnot_employeeCompany = 'carnot_employeeCompany',
   carnot_employeeDepartment = 'carnot_employeeDepartment',
   carnot_companyEmployees = 'carnot_companyEmployees',
+  carnot_pairAssignment = 'carnot_pairAssignment',
+  carnot_departmentManager = 'carnot_departmentManager',
+  carnot_departmentEmployees = 'carnot_departmentEmployees',
+  carnot_outsideEmployeeCompany = 'carnot_outsideEmployeeCompany',
+  carnot_consultantCompany = 'carnot_consultantCompany',
+  carnot_dateRangePairs = 'carnot_dateRangePairs',
+  carnot_assignmentEmployees = 'carnot_assignmentEmployees',
+  carnot_pairProject = 'carnot_pairProject',
+  carnot_pairDateRange = 'carnot_pairDateRange',
+  carnot_taskProjects = 'carnot_taskProjects',
+  carnot_projectTasks = 'carnot_projectTasks',
+  carnot_employeeAssignment = 'carnot_employeeAssignment',
 };
 
 const schema_name_input = new TextInput({
@@ -167,24 +177,59 @@ const carnot_status_input = new TextInput({
 });
 const carnot_manager_input = new EvaInput({
   label: 'Manager',
-  rdfType: 'carnot_Manager',
+  schema: 'carnot_Manager',
   listField: 'schema_name'
 });
 const carnot_company_input = new EvaInput({
   label: 'Company',
-  rdfType: 'carnot_Company',
+  schema: 'carnot_Company',
   listField: 'schema_name'
 });
 const carnot_department_input = new EvaInput({
   label: 'Department',
-  rdfType: 'carnot_Department',
+  schema: 'carnot_Department',
   listField: 'schema_name'
 });
 const carnot_employees_input = new MevaInput({
   label: 'Employees',
-  rdfType: 'carnot_Employee',
+  schema: 'carnot_Employee',
   listField: 'schema_name'
 });
+const carnot_pairing_input = new EvaInput({
+  label: 'Pairing',
+  schema: 'carnot_Pairing',
+  listField: 'schema_name'
+});
+const carnot_pairs_input = new MevaInput({
+  label: 'Pairings',
+  schema: 'carnot_Pairing',
+  listField: 'schema_name'
+})
+const carnot_project_input = new EvaInput({
+  label: 'Project',
+  schema: 'carnot_Project',
+  listField: 'schema_name'
+});
+const carnot_date_range_input = new EvaInput({
+  label: 'Date Range',
+  schema: 'carnot_DateRange',
+  listField: 'schema_startDate'
+});
+const carnot_tasks_input = new MevaInput({
+  label: 'Tasks',
+  schema: 'carnot_Task',
+  listField: 'schema_name'
+});
+const carnot_projects_input = new MevaInput({
+  label: 'Projects',
+  schema: 'carnot_Project',
+  listField: 'schema_name'
+});
+const carnot_assignment_input = new EvaInput({
+  label: 'Assignment',
+  schema: 'carnot_Assignment',
+  listField: 'schema_name',
+})
 
 type PropertyToInput = { [P in Properties]: Input };
 const PROPERTY_TO_INPUT: PropertyToInput = {
@@ -211,12 +256,25 @@ const PROPERTY_TO_INPUT: PropertyToInput = {
   [Properties.carnot_employeeManager]: carnot_manager_input,
   [Properties.carnot_employeeCompany]: carnot_company_input,
   [Properties.carnot_employeeDepartment]: carnot_department_input,
+  [Properties.carnot_departmentManager]: carnot_manager_input,
   [Properties.carnot_companyEmployees]: carnot_employees_input,
+  [Properties.carnot_pairAssignment]: carnot_pairing_input,
+  [Properties.carnot_departmentEmployees]: carnot_employees_input,
+  [Properties.carnot_outsideEmployeeCompany]: carnot_company_input,
+  [Properties.carnot_consultantCompany]: carnot_company_input,
+  [Properties.carnot_dateRangePairs]: carnot_pairs_input,
+  [Properties.carnot_assignmentEmployees]: carnot_employees_input,
+  [Properties.carnot_pairProject]: carnot_project_input,
+  [Properties.carnot_pairDateRange]: carnot_date_range_input,
+  [Properties.carnot_taskProjects]: carnot_projects_input,
+  [Properties.carnot_projectTasks]: carnot_tasks_input,
+  [Properties.carnot_employeeAssignment]: carnot_assignment_input,
 };
 
 interface ExposedType {
   name: string;
   rdfType: string;
+  identifier: Properties[],
   inputs: Properties[];
   columns: Properties[];
   defaultColumns: Properties[];
@@ -226,6 +284,7 @@ interface ExposedType {
 const CompanyType: ExposedType = {
   name: 'Company',
   rdfType: 'carnot_Company',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_type,
@@ -246,17 +305,23 @@ const CompanyType: ExposedType = {
 const DepartmentType: ExposedType = {
   name: 'Department',
   rdfType: 'carnot_Department',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
-    Properties.carnot_missionStatement
+    Properties.carnot_missionStatement,
+    Properties.carnot_departmentManager,
+    Properties.carnot_departmentEmployees,
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.carnot_missionStatement
+    Properties.carnot_missionStatement,
+    Properties.carnot_departmentManager,
+    Properties.carnot_departmentEmployees,
   ],
   inputs: [
     Properties.schema_name,
-    Properties.carnot_missionStatement
+    Properties.carnot_missionStatement,
+    Properties.carnot_departmentManager,
   ],
   mutable: true
 };
@@ -264,6 +329,7 @@ const DepartmentType: ExposedType = {
 const PersonType: ExposedType = {
   name: 'Person',
   rdfType: 'schema_Person',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob
@@ -282,6 +348,7 @@ const PersonType: ExposedType = {
 const EmployeeType: ExposedType = {
   name: 'Employee',
   rdfType: 'carnot_Employee',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -292,8 +359,9 @@ const EmployeeType: ExposedType = {
     Properties.carnot_married,
     Properties.carnot_hiredate,
     Properties.carnot_salary,
-    Properties.carnot_employeeCompany,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
+    Properties.carnot_employeeAssignment,
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -303,6 +371,7 @@ const EmployeeType: ExposedType = {
     Properties.carnot_hiredate,
     Properties.carnot_salary,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeAssignment,
   ],
   inputs: [
     Properties.schema_name,
@@ -315,6 +384,8 @@ const EmployeeType: ExposedType = {
     Properties.carnot_hiredate,
     Properties.carnot_salary,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
+    Properties.carnot_employeeAssignment,
   ],
   mutable: true
 };
@@ -322,6 +393,7 @@ const EmployeeType: ExposedType = {
 const FormerEmployeeType: ExposedType = {
   name: 'Former Employee',
   rdfType: 'carnot_FormerEmployee',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -336,6 +408,7 @@ const FormerEmployeeType: ExposedType = {
     Properties.carnot_leavestatus,
     Properties.carnot_lastday,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -361,6 +434,7 @@ const FormerEmployeeType: ExposedType = {
     Properties.carnot_leavestatus,
     Properties.carnot_lastday,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   mutable: true
 };
@@ -368,6 +442,7 @@ const FormerEmployeeType: ExposedType = {
 const ManagerType: ExposedType = {
   name: 'Manager',
   rdfType: 'carnot_Manager',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -380,6 +455,7 @@ const ManagerType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_title,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -406,6 +482,7 @@ const ManagerType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_title,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   mutable: true
 };
@@ -413,6 +490,7 @@ const ManagerType: ExposedType = {
 const FormerManagerType: ExposedType = {
   name: 'Former Manager',
   rdfType: 'carnot_FormerManager',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -425,6 +503,7 @@ const FormerManagerType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_title,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -438,6 +517,7 @@ const FormerManagerType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_title,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   inputs: [
     Properties.schema_name,
@@ -451,6 +531,7 @@ const FormerManagerType: ExposedType = {
     Properties.carnot_salary,
     Properties.carnot_title,
     Properties.carnot_employeeDepartment,
+    Properties.carnot_employeeCompany,
   ],
   mutable: true,
 };
@@ -458,6 +539,7 @@ const FormerManagerType: ExposedType = {
 const OutsideEmployeeType: ExposedType = {
   name: 'Outside Employee',
   rdfType: 'carnot_OutsideEmployee',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -465,7 +547,8 @@ const OutsideEmployeeType: ExposedType = {
     Properties.carnot_ssnum,
     Properties.schema_gender,
     Properties.carnot_citizen,
-    Properties.carnot_married
+    Properties.carnot_married,
+    Properties.carnot_outsideEmployeeCompany
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -474,7 +557,8 @@ const OutsideEmployeeType: ExposedType = {
     Properties.carnot_ssnum,
     Properties.schema_gender,
     Properties.carnot_citizen,
-    Properties.carnot_married
+    Properties.carnot_married,
+    Properties.carnot_outsideEmployeeCompany
   ],
   inputs: [
     Properties.schema_name,
@@ -483,7 +567,8 @@ const OutsideEmployeeType: ExposedType = {
     Properties.carnot_ssnum,
     Properties.schema_gender,
     Properties.carnot_citizen,
-    Properties.carnot_married
+    Properties.carnot_married,
+    Properties.carnot_outsideEmployeeCompany
   ],
   mutable: true
 };
@@ -491,6 +576,7 @@ const OutsideEmployeeType: ExposedType = {
 const ConsultantType: ExposedType = {
   name: 'Consultant',
   rdfType: 'carnot_Consultant',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_dob,
@@ -499,6 +585,8 @@ const ConsultantType: ExposedType = {
     Properties.schema_gender,
     Properties.carnot_citizen,
     Properties.carnot_married,
+    Properties.schema_cv,
+    Properties.carnot_consultantCompany,
   ],
   defaultColumns: [
     Properties.schema_name,
@@ -508,6 +596,7 @@ const ConsultantType: ExposedType = {
     Properties.schema_gender,
     Properties.carnot_citizen,
     Properties.carnot_married,
+    Properties.carnot_consultantCompany,
   ],
   inputs: [
     Properties.schema_name,
@@ -517,6 +606,8 @@ const ConsultantType: ExposedType = {
     Properties.schema_gender,
     Properties.carnot_citizen,
     Properties.carnot_married,
+    Properties.schema_cv,
+    Properties.carnot_consultantCompany,
   ],
   mutable: true
 };
@@ -524,17 +615,23 @@ const ConsultantType: ExposedType = {
 const AssignmentType: ExposedType = {
   name: 'Assignment',
   rdfType: 'carnot_Assignment',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
     Properties.carnot_status,
+    Properties.carnot_pairAssignment,
+    // Properties.carnot_assignmentEmployees,
   ],
   defaultColumns: [
     Properties.schema_name,
     Properties.carnot_status,
+    Properties.carnot_pairAssignment,
+    // Properties.carnot_assignmentEmployees,
   ],
   inputs: [
     Properties.schema_name,
     Properties.carnot_status,
+    Properties.carnot_pairAssignment,
   ],
   mutable: true
 };
@@ -542,13 +639,16 @@ const AssignmentType: ExposedType = {
 const DateRangeType: ExposedType = {
   name: 'Date Range',
   rdfType: 'carnot_DateRange',
+  identifier: [ Properties.schema_startDate, Properties.schema_endDate ],
   columns: [
     Properties.schema_startDate,
     Properties.schema_endDate,
+    Properties.carnot_dateRangePairs,
   ],
   defaultColumns: [
     Properties.schema_startDate,
     Properties.schema_endDate,
+    Properties.carnot_dateRangePairs,
   ],
   inputs: [
     Properties.schema_startDate,
@@ -560,13 +660,16 @@ const DateRangeType: ExposedType = {
 const ProjectType: ExposedType = {
   name: 'Project',
   rdfType: 'carnot_Project',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.schema_description,
+    Properties.carnot_projectTasks,
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.schema_description,
+    Properties.carnot_projectTasks,
   ],
   inputs: [
     Properties.schema_name,
@@ -578,13 +681,16 @@ const ProjectType: ExposedType = {
 const TaskType: ExposedType = {
   name: 'Task',
   rdfType: 'carnot_Task',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.schema_description,
+    Properties.carnot_taskProjects,
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.schema_description,
+    Properties.carnot_taskProjects,
   ],
   inputs: [
     Properties.schema_name,
@@ -596,17 +702,23 @@ const TaskType: ExposedType = {
 const PairingType: ExposedType = {
   name: 'Pairing',
   rdfType: 'carnot_Pairing',
+  identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.carnot_pairAssignment,
+    Properties.carnot_pairProject,
+    Properties.carnot_pairDateRange,
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.carnot_pairAssignment,
+    Properties.carnot_pairProject,
+    Properties.carnot_pairDateRange,
   ],
   inputs: [
     Properties.schema_name,
-    Properties.schema_description
+    Properties.carnot_pairProject,
+    Properties.carnot_pairDateRange,
   ],
   mutable: true
 };
@@ -673,37 +785,17 @@ const connection = new Connection({
 //   prefix : <http://Carnot.org/>
 
 //   SELECT * WHERE {
-//     ?i a :Pairing .
-//     ?i ?p ?o
+//     ?i a :Employee .
 //   }
-//   order by ?i ?p
 //   `,
-//   'application/sparql-results+json' as any,
-//   // 'application/rdf+xml',
-//   // 'application/ld+json',
+//   'application/ld-results+json' as any,
 //   { limit: 10, offset: 0 }
 // ).then(({ body }) => {
-//   console.log(body.results.bindings);
+//   console.log(body);
 // }).catch((e) => {
 //   console.log('ERROR', e);
 // })
 
-const test = query.graphql.execute(
-  connection,
-  'companyDB',
-  `
-  query withPrefixes @prefix(carnot: "http://Carnot.org/") {
-    carnot_Employee {
-      carnot_id
-      schema_name @optional
-    }
-  }
-  `,
-  { '@reasoning': true },
-  { limit: 10, offset: 0 }
-).then(({ body }) => {
-  console.log(body);
-})
 
 // http://Carnot.org/Consultant/http://Carnot.org/Consultant1
 /*
@@ -744,45 +836,127 @@ const normalizeToIRI = (x: string) => {
     }]
   }
 */
+async function dataToIri(data) {
+  const input = PROPERTY_TO_INPUT[data.field];
+  const test = await query.execute(
+    connection,
+    'companyDB',
+    `
+    prefix schema: <http://schema.org/>
+    prefix carnot: <http://Carnot.org/>
+
+    select distinct ?s
+    where {
+      ?s a ${normalizeToPrefix(input.schema)} .
+      ?s ${normalizeToPrefix(input.listField)} "${data.value}"
+    }
+    `,
+    'application/sparql-results+json' as any
+  );
+  const iri = test.body.results.bindings[0].s.value;
+  return iri;
+};
+
+async function identifierMapToIri(rdfType, identifierMap) {
+  const sparqlQuery = `
+  prefix schema: <http://schema.org/>
+  prefix carnot: <http://Carnot.org/>
+
+  select distinct ?s
+  where {
+    ?s a ${rdfType} .
+    ${Object.entries(identifierMap).map(([field, value]) => {
+      return `?s ${normalizeToPrefix(field)} "${value}"`
+    }).join('\n')}
+  }
+  `;
+  console.log('sparql', sparqlQuery);
+  const test = await query.execute(
+    connection,
+    'companyDB',
+    sparqlQuery,
+    'application/sparql-results+json' as any
+  );
+  console.log(test.body.results);
+  const iri = test.body.results.bindings[0].s.value;
+  return iri;
+};
+
 app.use(express.json());
+app.get('/graphql',)
 app.post('/create/:rdfType', async (req, res) => {
   const rdfType = normalizeToPrefix(req.params['rdfType']);
   const iriPath = req.body.iriPath;
   const data = req.body.data;
 
-  const putRes = await db.graph.doPut(
-    connection,
-    'companyDB',
-    JSON.stringify({
+  try {
+    const evaData = await Promise.all(data.map(async (x) => {
+      if (PROPERTY_TO_INPUT[x.field] instanceof EvaInput) {
+        return {
+          ...x,
+          value: await dataToIri(x),
+          schema: normalizeToPrefix(x.schema),
+          eva: true,
+        };
+      }
+      return { ...x };
+    }));
+    const jsonLdData = {
       "@context": { ...prefixes },
       "@id": `carnot:${iriPath}`,
       "@type": rdfType,
-      ...data.reduce((prev, val) => {
+      ...evaData.reduce((prev, val: any) => {
+        if (val.eva) {
+          return {
+            ...prev,
+            [normalizeToPrefix(val.field)]: {
+              "@id": val.value,
+              "@type": val.schema
+            }
+          }
+        }
         return {
           ...prev,
-          [val.field]: {
+          [normalizeToPrefix(val.field)]: {
             '@value': val.value,
             '@type': val.schema
           }
         };
       }, {})
-      // "schema:name": "Jack",
-      // "carnot:dob": {
-      //   "@value": "1995-02-03",
-      //   "@type": "xsd:date"
-      // }
-    }),
-    `${normalizeToIRI(rdfType)}http://Carnot.org/${iriPath}`
-    // `http://Carnot.org/Consultant/http://Carnot.org/Consultant3`,
-  );
+    };
+    console.log('jsonLd', jsonLdData);
+  
+    const putRes = await db.graph.doPut(
+      connection,
+      'companyDB',
+      JSON.stringify(jsonLdData),
+      `${normalizeToIRI(rdfType)}http://Carnot.org/${iriPath}`
+      // `http://Carnot.org/Consultant/http://Carnot.org/Consultant3`,
+    );
 
-  if (!putRes.ok) {
-    console.log(putRes);
+    if (!putRes.ok) {
+      return res.status(400).json({
+        'success': false,
+        ...putRes.body
+      });
+    }
+  
     return res.json({
+      'success': true
+    }).send();
+  } catch (e) {
+    return res.status(400).json({
       'success': false,
-      ...putRes.body
-    }).status(400).send();
+      'message': 'Invalid data'
+    });
   }
+});
+
+app.post('/delete/:rdfType', async (req, res) => {
+  const rdfType = normalizeToPrefix(req.params['rdfType']);
+  const identifierMap = req.body;
+  const iri = await identifierMapToIri(rdfType, identifierMap);
+  const result = await db.graph.doDelete(connection, 'companyDB', iri);
 
   return res.json({
     'success': true

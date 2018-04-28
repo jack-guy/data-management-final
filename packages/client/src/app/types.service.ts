@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, filter, flatMap, tap, take } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Injectable()
@@ -10,8 +11,8 @@ export class TypesService {
 
   constructor (private http: HttpClient) {}
 
-  find () {
-    if (this.cache) {
+  find (bustCache = false) {
+    if (this.cache && !bustCache) {
       return of(this.cache);
     }
     return this.http.get('http://localhost:4201/types').pipe(
@@ -31,10 +32,14 @@ export class TypesService {
   typeToFormGroup (type) {
     let group: any = {};
 
-    // questions.forEach(question => {
-    //   group[question.key] = question.required ? new FormControl(question.value || '', Validators.required)
-    //                                           : new FormControl(question.value || '');
-    // });
-    // return new FormGroup(group);
+    // [{"label":"Name","maxLength":50,"inputType":"text","schema":"xsd:string","rdfField":"schema_name"},
+    type.inputs.forEach(input => {
+      if (input.inputType === 'bool') {
+        group[input.rdfField] = new FormControl('');
+      } else {
+        group[input.rdfField] = new FormControl('', Validators.required);
+      }
+    });
+    return new FormGroup(group);
   }
 }

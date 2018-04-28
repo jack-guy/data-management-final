@@ -12,4 +12,11 @@ export class GraphService {
       data
     });
   }
+
+  delete (rdfType: string, identifierMap) {
+    return this.http.post(
+      `http://localhost:4201/delete/${rdfType}`,
+      identifierMap
+    );
+  }
 }
