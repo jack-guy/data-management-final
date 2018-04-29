@@ -50,11 +50,14 @@ export class MultiEvaComponent implements OnInit {
   }
 
   getItems (instance, column) {
-    return (
-      this.instance[this.column.rdfField] instanceof Array
-    )
-      ? this.instance[this.column.rdfField]
-      : [this.instance[this.column.rdfField]];
+    console.log('getItems', instance, column);
+    if (!this.instance[this.column.rdfField]) {
+      return [];
+    }
+    if (this.instance[this.column.rdfField] instanceof Array) {
+      return this.instance[this.column.rdfField]
+    }
+    return [this.instance[this.column.rdfField]];
   }
 
 

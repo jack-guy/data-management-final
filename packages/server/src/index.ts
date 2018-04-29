@@ -87,6 +87,7 @@ enum Properties {
   carnot_employeeDepartment = 'carnot_employeeDepartment',
   carnot_companyEmployees = 'carnot_companyEmployees',
   carnot_pairAssignment = 'carnot_pairAssignment',
+  carnot_assignmentPairs = 'carnot_assignmentPairs',
   carnot_departmentManager = 'carnot_departmentManager',
   carnot_departmentEmployees = 'carnot_departmentEmployees',
   carnot_outsideEmployeeCompany = 'carnot_outsideEmployeeCompany',
@@ -230,6 +231,11 @@ const carnot_assignment_input = new EvaInput({
   schema: 'carnot_Assignment',
   listField: 'schema_name',
 })
+const carnot_assignments_input = new MevaInput({
+  label: 'Assignments',
+  schema: 'carnot_Assignment',
+  listField: 'schema_name',
+})
 
 type PropertyToInput = { [P in Properties]: Input };
 const PROPERTY_TO_INPUT: PropertyToInput = {
@@ -259,6 +265,7 @@ const PROPERTY_TO_INPUT: PropertyToInput = {
   [Properties.carnot_departmentManager]: carnot_manager_input,
   [Properties.carnot_companyEmployees]: carnot_employees_input,
   [Properties.carnot_pairAssignment]: carnot_pairing_input,
+  [Properties.carnot_assignmentPairs]: carnot_assignments_input,
   [Properties.carnot_departmentEmployees]: carnot_employees_input,
   [Properties.carnot_outsideEmployeeCompany]: carnot_company_input,
   [Properties.carnot_consultantCompany]: carnot_company_input,
@@ -705,13 +712,13 @@ const PairingType: ExposedType = {
   identifier: [ Properties.schema_name ],
   columns: [
     Properties.schema_name,
-    Properties.carnot_pairAssignment,
+    Properties.carnot_assignmentPairs,
     Properties.carnot_pairProject,
     Properties.carnot_pairDateRange,
   ],
   defaultColumns: [
     Properties.schema_name,
-    Properties.carnot_pairAssignment,
+    Properties.carnot_assignmentPairs,
     Properties.carnot_pairProject,
     Properties.carnot_pairDateRange,
   ],
