@@ -1,5 +1,9 @@
 # Stardog CompanyDB
 
+[Slideshow Overview](http://slides.com/jackguy-1/stardog-companydb/fullscreen)
+
+![](https://sketchleague.nyc3.digitaloceanspaces.com/misc/misc/stardog-angular-screenshot.png)
+
 ## Prereqs
 1. Node 8+ is installed
 2. Yarn is installed
